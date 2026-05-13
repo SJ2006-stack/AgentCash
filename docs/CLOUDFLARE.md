@@ -88,7 +88,7 @@ npm run deploy:cf
 
 ## Worker name
 
-`wrangler.jsonc` sets `"name": "mandate-web"`. It must be unique in your account; change if there is a collision.
+`wrangler.jsonc` sets `"name": "agentcash"`. It must be unique in your account; change if there is a collision.
 
 ## Troubleshooting
 
