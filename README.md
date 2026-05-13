@@ -234,6 +234,14 @@ Issuing objects and requirements differ by account and country. This repo issues
 - The `decide_pending_approval` RPC is `security definer` and token-scoped — anyone holding a magic link can decide that single pending approval and nothing else. Treat the URLs as one-time codes.
 - The Slack and WhatsApp webhook routes call the same RPC server-side using the service role; we recommend setting `SLACK_VERIFICATION_TOKEN` and configuring Twilio request validation in production.
 
+## Deploy to Cloudflare (OpenNext)
+
+The Next.js app uses **`@opennextjs/cloudflare`** and deploys as a **Worker** with Wrangler. Use **`npm run build:cf`** on Cloudflare CI (skips MCP/CLI) and deploy from **`apps/web`**.
+
+**Dashboard:** Workers Builds from Git — root directory `/`, build `npm ci && npm run build:cf`, deploy `cd apps/web && npx wrangler deploy`. Set `CLOUDFLARE_API_TOKEN` / account for non-interactive deploys.
+
+Full checklist: **[docs/CLOUDFLARE.md](docs/CLOUDFLARE.md)** · one-liner: `npm run deploy:cf` (after `wrangler login`).
+
 ## Roadmap → v0.2
 
 - Stripe Issuing `authorization.request` webhook so we can authorize/decline live attempts in real time (currently we rely on the spending controls).

@@ -1,14 +1,19 @@
 {
   "name": "mandate-mcp-monorepo",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "workspaces": ["apps/*", "packages/*"],
   "overrides": {
     "@types/json-schema": "7.0.15"
   },
   "scripts": {
-    "build": "npm run build -w @mandate/mandate-engine && npm run build -w @mandate/mcp-server && npm run build -w @mandate/cli && npm run build -w web",
+    "build": "npm run build -w @mandate/mandate-engine && npm run build -w @mandate/mcp-server && npm run build -w @mandate/cli && npm run build:cf -w web",
+    "build:cf": "npm run build -w @mandate/mandate-engine && npm run build:cf -w web",
     "dev:web": "npm run dev -w web",
     "dev:mcp": "npm run dev -w @mandate/mcp-server",
-    "mcp:start": "npm run start -w @mandate/mcp-server"
+    "mcp:start": "npm run start -w @mandate/mcp-server",
+    "deploy:cf": "npm run build:cf && cd apps/web && npx wrangler deploy"
   }
 }

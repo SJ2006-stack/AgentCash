@@ -1,0 +1,2 @@
+# Local preview with: npm run preview (OpenNext + wrangler)
+NEXTJS_ENV=development
