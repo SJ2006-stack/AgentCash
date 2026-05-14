@@ -57,13 +57,21 @@ Wrangler picks these up for `wrangler deploy` without `wrangler login`.
 
 ## Environment variables (production / preview)
 
-Set in the Worker (or build) environment everything the app needs at **runtime** (and `NEXT_PUBLIC_*` at **build** time for Next.js inlining):
+Configure **Variables and Secrets** on the **Worker** (Workers & Pages → your project → **Settings** → **Variables and Secrets**). They are exposed as the Worker `env` object at runtime.
+
+The app reads them via **`getCloudflareContext().env`** (see `src/lib/env/worker-env.ts`), not only `process.env`, so values you set only in the Cloudflare dashboard are still visible to Next.js middleware, Server Components, and route handlers—avoiding empty `NEXT_PUBLIC_*` values that can occur when Next inlines env at build time without those keys.
+
+Set everything the app needs at **runtime**:
 
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (use **Secret** type in the dashboard)
 - `STRIPE_SECRET_KEY`, `STRIPE_SKIP_ISSUING` (optional)
 - `APPROVAL_BASE_URL` or `NEXT_PUBLIC_SITE_URL` — **public URL of this deployment** (for approval links and MCP `APPROVAL_BASE_URL`)
 - Optional: Twilio, `SLACK_VERIFICATION_TOKEN`, `MANDATE_ALLOW_AGENT_APPROVAL`
+- Optional **rate limits** (plain numbers): `AGENT_API_IP_MAX_PER_MIN` (default 600), `AGENT_API_READ_LIGHT_PER_MIN` (120, e.g. list cards), `AGENT_API_READ_HEAVY_PER_MIN` (40, Stripe-read routes), `AGENT_API_WRITE_PER_MIN` (25, mint/close/approve). Set any to `0` to disable that bucket. Per-isolate in memory on Workers.
+- Optional: `MCP_KEY_ROTATE_MAX_PER_HOUR` (default 8) for dashboard MCP key rotation.
+
+`NEXT_PUBLIC_*` are also written into the HTML shell for the browser Supabase client (`app/layout.tsx`), so the dashboard does not need a separate “build-only” copy unless you prefer duplicating them for `next build` in CI.
 
 See `apps/web/.env.local.example` and root `README.md`.
 

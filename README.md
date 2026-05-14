@@ -1,4 +1,6 @@
-# Mandate + MCP payment gateway (v0.2)
+# AgentCash (mandate + MCP payment gateway, v0.2)
+
+**AgentCash** is the product name for this stack: human mandates, MCP “bouncer,” Stripe Issuing test cards, Slack/WhatsApp approvals, and OpenNext on Cloudflare (`agentcash` Worker).
 
 Monorepo:
 
@@ -8,6 +10,10 @@ Monorepo:
 4. **`packages/cli`** — `mandate` CLI calling the HTTPS API (for scripts / humans).
 5. **`skills/mandate-payment`** — **OpenClaw / AgentSkills-compatible** `SKILL.md` (workspace `skills/` is highest precedence in OpenClaw).
 6. **`supabase/migrations`** — Postgres schema + RLS (owners vs service role for ledger/approvals).
+
+## Local guardrails (`Private.md`)
+
+Create a **`Private.md`** file at the **repo root** for your private instructions, todos, and agent guardrails. You can run `cp Private.md.example Private.md` and customize. **`Private.md`** is listed in **`.gitignore`** so it stays on your machine and is **not pushed to GitHub**. Cursor loads **`.cursor/rules/agentcash-private.mdc`**, which tells the agent to read `Private.md` when it exists before building.
 
 ## What changed in v0.15 (power features)
 

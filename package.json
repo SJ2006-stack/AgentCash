@@ -4,7 +4,10 @@
   "engines": {
     "node": ">=22"
   },
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "overrides": {
     "@types/json-schema": "7.0.15"
   },
@@ -15,5 +18,9 @@
     "dev:mcp": "npm run dev -w @mandate/mcp-server",
     "mcp:start": "npm run start -w @mandate/mcp-server",
     "deploy:cf": "npm run build:cf && cd apps/web && npx wrangler deploy"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.105.4"
   }
 }

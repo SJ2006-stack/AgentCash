@@ -1,0 +1,58 @@
+# AgentCash — private agent guardrails (local only)
+
+**Copy this file to `Private.md` at the repo root** and edit `Private.md`. The real `Private.md` is **gitignored** and never pushed to GitHub.  
+**Do not put production secrets here** if you ever copy this file; use `.env.local` and Cloudflare/CI secret stores for keys.
+
+---
+
+## Product
+
+- **Name:** AgentCash  
+- **Repo:** monorepo (`apps/web`, `packages/mandate-engine`, MCP server, CLI, Supabase).
+
+---
+
+## Guardrails (fill in)
+
+<!-- Example sections — replace with your rules -->
+
+### Scope
+
+- (e.g. “No drive-by refactors outside the task.”)
+- (e.g. “Match existing patterns in `apps/web` and `packages/mandate-engine`.”)
+
+### Naming & branding
+
+- Prefer **AgentCash** in user-facing copy and new docs.
+- Internal package names (`@mandate/*`) may stay until a deliberate rename.
+
+### Security
+
+- Never commit `.env.local`, `Private.md` contents, or API keys into tracked files.
+- Service role and Stripe keys only in env / dashboard.
+
+### Reliability (Agent API — May 2026)
+
+- **`/api/v1/*`** uses `runAgentRoute` (`apps/web/src/app/api/v1/_lib/run-agent-route.ts`): IP cap + per-agent tier limits (`src/lib/api/rate-limit.ts`) so a buggy agent or script cannot hammer **Stripe Issuing** / **Supabase** in a tight loop. Defaults are conservative; tune with `AGENT_API_*` env vars (see `apps/web/.env.local.example` and `docs/CLOUDFLARE.md`). Limits are **best-effort per Worker isolate** (reset on cold start), not a global DDoS product.
+- **Errors**: `toErrorResponse` (`src/lib/api/http-errors.ts`) maps Stripe-like errors, PostgREST-like errors, JSON parse failures, and config errors to stable JSON without leaking raw vendor payloads. Policy violations stay **422** via `jsonFromEngine`.
+- **Dashboard MCP key rotation**: `POST /api/agents/[id]/mcp-key` is capped per user per hour (`MCP_KEY_ROTATE_MAX_PER_HOUR`).
+- When extending APIs, reuse **`runAgentRoute`** + **`toErrorResponse`** instead of ad-hoc `catch` messages.
+
+### Deploy
+
+- Cloudflare Worker name: **agentcash** (`apps/web/wrangler.jsonc`).
+- Build: `npm ci && npm run build` or `npm run build:cf`; deploy: `cd apps/web && npx wrangler deploy`.
+
+---
+
+## Active todos (agent)
+
+<!-- Bullet list the agent should respect on the next turns -->
+
+- [ ] (your item)
+
+---
+
+## Notes
+
+(Space for freeform context the agent should read before building.)

@@ -1,0 +1,14 @@
+---
+description: Read local Private.md for AgentCash guardrails before building; never commit it.
+alwaysApply: true
+---
+
+# AgentCash — local guardrails
+
+1. **Before substantive implementation** (features, refactors, multi-file changes), check whether **`Private.md`** exists at the **repository root**. If it does, **read it** and follow its guardrails, todos, and scope unless the user’s latest message explicitly overrides them.
+
+2. **Product name:** the startup is **AgentCash**. Prefer that name in user-facing strings and new documentation where it fits; internal code may still use `@mandate/*` package names until renamed.
+
+3. **`Private.md` must never be committed** — it is gitignored. Do not remove it from `.gitignore` or add secrets to tracked files.
+
+4. If `Private.md` is missing, proceed from the user message and existing repo docs (`README.md`, `docs/CLOUDFLARE.md`).

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mandate/mandate-engine": "*",
+    "@opennextjs/cloudflare": "^1.19.9",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
     "next": "^15.5.18",
@@ -20,7 +21,6 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.19.9",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",

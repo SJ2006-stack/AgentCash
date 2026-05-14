@@ -1,28 +1,27 @@
 import { NextResponse } from "next/server";
-import { parseAgentAuthBearer, unauthorized } from "../_lib/agent-auth";
+import { jsonFromEngine } from "../_lib/agent-auth";
 import { getMandateEngine } from "../_lib/engine";
+import { runAgentRoute } from "../_lib/run-agent-route";
 
 export async function GET(req: Request) {
-  const auth = parseAgentAuthBearer(req);
-  if (!auth) return unauthorized();
-  try {
+  return runAgentRoute(req, "read_light", async (auth) => {
     const engine = getMandateEngine();
     const r = await engine.listActiveCards(auth.agentId, auth.agentKey);
     if (!r.ok) {
       return NextResponse.json({ error: "policy_violation", message: r.policyViolation }, { status: 422 });
     }
     return NextResponse.json(r.data);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json({ error: "server_error", message: msg }, { status: 500 });
-  }
+  });
 }
 
 export async function POST(req: Request) {
-  const auth = parseAgentAuthBearer(req);
-  if (!auth) return unauthorized();
-  try {
-    const body = (await req.json()) as Record<string, unknown>;
+  return runAgentRoute(req, "write", async (auth) => {
+    let body: Record<string, unknown>;
+    try {
+      body = (await req.json()) as Record<string, unknown>;
+    } catch {
+      return NextResponse.json({ error: "bad_request", message: "Invalid JSON body." }, { status: 400 });
+    }
     const amount = Number(body.amount_cents);
     if (!Number.isFinite(amount) || amount <= 0) {
       return NextResponse.json({ error: "bad_request", message: "amount_cents required" }, { status: 400 });
@@ -39,12 +38,6 @@ export async function POST(req: Request) {
         body.subscription_period_days != null ? Number(body.subscription_period_days) : undefined,
       sandbox: body.sandbox === true,
     });
-    if (!r.ok) {
-      return NextResponse.json({ error: "policy_violation", message: r.policyViolation }, { status: 422 });
-    }
-    return NextResponse.json(r.data);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json({ error: "bad_request", message: msg }, { status: 400 });
-  }
+    return jsonFromEngine(r);
+  });
 }
