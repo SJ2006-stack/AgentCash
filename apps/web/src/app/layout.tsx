@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
+import { SiteHeader } from "@/components/SiteHeader";
 import { readWorkerEnv } from "@/lib/env/worker-env";
 import "./globals.css";
 
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+});
+
 export const metadata: Metadata = {
-  title: "Mandate",
-  description: "Deterministic spend rules for agent payments",
+  title: "AgentCash",
+  description: "Spend rails for AI agents — mandates, approvals, and Issuing test cards.",
 };
 
 function publicSupabaseInlineScript(): string | null {
@@ -17,7 +25,7 @@ function publicSupabaseInlineScript(): string | null {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const inlineEnv = publicSupabaseInlineScript();
   return (
-    <html lang="en">
+    <html lang="en" className={dmSans.variable}>
       <head>
         {inlineEnv ? (
           <script
@@ -26,7 +34,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         ) : null}
       </head>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body
+        className="min-h-screen antialiased"
+        style={{ fontFamily: "var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif" }}
+      >
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }

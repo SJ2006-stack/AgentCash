@@ -85,27 +85,28 @@ export default async function AgentDetailPage({ params }: { params: Promise<{ id
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <Link href="/dashboard" className="text-sm text-[var(--muted)]">
-        Back to agents
+    <main className="mx-auto max-w-5xl px-6 py-10 md:py-14">
+      <Link href="/dashboard" className="ac-muted-link">
+        ← Back to agents
       </Link>
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-6 border-b border-[color:var(--border)] pb-8">
         <div>
-          <h1 className="text-2xl font-semibold">{agent.name}</h1>
-          <p className="mt-1 text-sm text-[var(--muted)]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400/80">Agent</p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-[color:var(--fg)]">{agent.name}</h1>
+          <p className="mt-2 text-sm text-[color:var(--muted)]">
             Mode:{" "}
-            <span className={mandate.shadow_mode ? "text-amber-300" : "text-emerald-300"}>
-              {mandate.shadow_mode ? "SHADOW (simulated)" : "LIVE"}
+            <span className={mandate.shadow_mode ? "font-medium text-amber-300" : "font-medium text-emerald-300"}>
+              {mandate.shadow_mode ? "Shadow (simulated)" : "Live"}
             </span>
           </p>
         </div>
         <div className="text-right">
-          <p className="text-sm text-[var(--muted)]">
-            Live this month: <span className="font-medium text-[var(--fg)]">{fmtUsd(liveCents)}</span> /{" "}
+          <p className="text-sm text-[color:var(--muted)]">
+            Live this month: <span className="font-semibold text-[color:var(--fg)]">{fmtUsd(liveCents)}</span> /{" "}
             {fmtUsd(mandate.monthly_max_cents)}
           </p>
-          <p className="text-sm text-[var(--muted)]">
-            Shadow this month: <span className="font-medium text-amber-300">{fmtUsd(shadowCents)}</span>
+          <p className="mt-1 text-sm text-[color:var(--muted)]">
+            Shadow this month: <span className="font-semibold text-amber-300">{fmtUsd(shadowCents)}</span>
           </p>
         </div>
       </div>

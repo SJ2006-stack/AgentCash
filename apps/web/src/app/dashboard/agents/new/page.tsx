@@ -11,28 +11,26 @@ export default async function NewAgentPage() {
   if (!user) redirect("/login");
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12">
-      <Link href="/dashboard" className="text-sm text-[var(--muted)]">
-        Back to agents
+    <main className="mx-auto max-w-2xl px-6 py-10 md:py-14">
+      <Link href="/dashboard" className="ac-muted-link">
+        ← Back to agents
       </Link>
-      <h1 className="mt-4 text-2xl font-semibold">New agent profile</h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">
+      <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-emerald-400/80">New agent</p>
+      <h1 className="mt-2 text-3xl font-bold tracking-tight text-[color:var(--fg)]">Agent profile & mandate</h1>
+      <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted)]">
         Set deterministic spend rules. The MCP gateway will block anything outside these bounds and (optionally) ask a
         human via Slack or WhatsApp before approving edge cases.
       </p>
 
-      <form
-        action={createAgentWithMandate}
-        className="mt-8 flex flex-col gap-6 rounded-xl border border-[var(--border)] bg-[var(--card)] p-6"
-      >
+      <form action={createAgentWithMandate} className="ac-card mt-8 flex flex-col gap-8 p-7 md:p-8">
         <section className="grid gap-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">Basics</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-[color:var(--muted)]">Basics</h2>
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-[var(--muted)]">Agent name</span>
             <input
               name="name"
               required
-              className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+              className="ac-input"
             />
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -44,7 +42,7 @@ export default async function NewAgentPage() {
                 step="0.01"
                 min="0.01"
                 required
-                className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+                className="ac-input"
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
@@ -55,7 +53,7 @@ export default async function NewAgentPage() {
                 step="0.01"
                 min="0.01"
                 required
-                className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+                className="ac-input"
               />
             </label>
           </div>
@@ -65,7 +63,7 @@ export default async function NewAgentPage() {
               name="merchants"
               placeholder="aws, digitalocean, stripe_invoices"
               required
-              className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+              className="ac-input"
             />
             <span className="text-xs text-[var(--muted)]">
               Matching is exact after lowercasing. Agents must use the same token in <code>request_payment</code>.
@@ -73,8 +71,8 @@ export default async function NewAgentPage() {
           </label>
         </section>
 
-        <section className="grid gap-4 border-t border-[var(--border)] pt-6">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">Trust controls</h2>
+        <section className="grid gap-4 border-t border-[color:var(--border)] pt-8">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-[color:var(--muted)]">Trust controls</h2>
           <label className="flex items-start gap-3 text-sm">
             <input
               type="checkbox"
@@ -100,7 +98,7 @@ export default async function NewAgentPage() {
                 step="0.01"
                 min="0"
                 placeholder="e.g. 50"
-                className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+                className="ac-input"
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
@@ -112,7 +110,7 @@ export default async function NewAgentPage() {
                 min="30"
                 max="1800"
                 defaultValue={180}
-                className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+                className="ac-input"
               />
             </label>
           </div>
@@ -124,11 +122,7 @@ export default async function NewAgentPage() {
 
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-[var(--muted)]">Approval channel</span>
-            <select
-              name="approval_channel"
-              defaultValue="none"
-              className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
-            >
+            <select name="approval_channel" defaultValue="none" className="ac-input cursor-pointer">
               <option value="none">None</option>
               <option value="slack">Slack</option>
               <option value="whatsapp">WhatsApp</option>
@@ -143,7 +137,7 @@ export default async function NewAgentPage() {
                 name="slack_webhook_url"
                 type="url"
                 placeholder="https://hooks.slack.com/services/..."
-                className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+                className="ac-input"
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
@@ -151,13 +145,13 @@ export default async function NewAgentPage() {
               <input
                 name="whatsapp_to_e164"
                 placeholder="+15551234567"
-                className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+                className="ac-input"
               />
             </label>
           </div>
         </section>
 
-        <button type="submit" className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white">
+        <button type="submit" className="ac-btn-primary w-full py-3 text-[15px] sm:w-auto sm:self-start">
           Create agent
         </button>
       </form>

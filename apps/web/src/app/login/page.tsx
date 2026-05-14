@@ -31,53 +31,60 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex max-w-md flex-col gap-6 px-6 py-16">
+    <main className="mx-auto flex max-w-md flex-col gap-8 px-6 py-14 md:py-20">
       <div>
-        <h1 className="text-2xl font-semibold">{mode === "signin" ? "Sign in" : "Create account"}</h1>
-        <p className="mt-2 text-sm text-[var(--muted)]">
-          Email and password auth for v0.1. Enable Email provider in Supabase Auth settings.
+        <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400/80">Account</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-[color:var(--fg)]">
+          {mode === "signin" ? "Welcome back" : "Create your workspace"}
+        </h1>
+        <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted)]">
+          Email and password auth. Enable the Email provider in Supabase Auth if you have not already.
         </p>
       </div>
-      <form className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-[var(--card)] p-6" onSubmit={onSubmit}>
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-[var(--muted)]">Email</span>
+
+      <form className="ac-card flex flex-col gap-5 p-7" onSubmit={onSubmit}>
+        <label className="flex flex-col gap-2 text-sm">
+          <span className="font-medium text-[color:var(--muted)]">Email</span>
           <input
-            className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+            className="ac-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-[var(--muted)]">Password</span>
+        <label className="flex flex-col gap-2 text-sm">
+          <span className="font-medium text-[color:var(--muted)]">Password</span>
           <input
-            className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+            className="ac-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
+            autoComplete={mode === "signin" ? "current-password" : "new-password"}
           />
         </label>
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
-          {loading ? "Working…" : mode === "signin" ? "Sign in" : "Sign up"}
+        {error ? (
+          <p className="rounded-lg border border-red-500/25 bg-red-500/10 px-3 py-2 text-sm text-[color:var(--danger)]">
+            {error}
+          </p>
+        ) : null}
+        <button type="submit" disabled={loading} className="ac-btn-primary w-full py-3">
+          {loading ? "Working…" : mode === "signin" ? "Sign in" : "Create account"}
         </button>
         <button
           type="button"
-          className="text-sm text-[var(--muted)] underline"
+          className="text-center text-sm text-[color:var(--muted)] underline-offset-4 transition hover:text-[color:var(--fg)] hover:underline"
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
         >
           {mode === "signin" ? "Need an account? Sign up" : "Have an account? Sign in"}
         </button>
       </form>
-      <Link className="text-sm text-[var(--muted)]" href="/">
-        Back
+
+      <Link href="/" className="ac-muted-link text-center">
+        ← Back to home
       </Link>
     </main>
   );

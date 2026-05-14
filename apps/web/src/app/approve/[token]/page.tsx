@@ -46,50 +46,57 @@ export default async function ApprovePage({
 
   if (!row) {
     return (
-      <main className="mx-auto max-w-md px-6 py-20">
-        <h1 className="text-xl font-semibold">Unknown approval link</h1>
-        <p className="mt-2 text-sm text-[var(--muted)]">This token does not exist or has been cleared.</p>
+      <main className="mx-auto max-w-md px-6 py-20 md:py-24">
+        <p className="text-xs font-semibold uppercase tracking-widest text-amber-400/90">Approval</p>
+        <h1 className="mt-2 text-2xl font-bold text-[color:var(--fg)]">Link not found</h1>
+        <p className="mt-3 text-sm text-[color:var(--muted)]">This token does not exist or has already been used.</p>
       </main>
     );
   }
 
   return (
-    <main className="mx-auto max-w-md px-6 py-16">
-      <h1 className="text-xl font-semibold">Mandate approval</h1>
-      <div className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--card)] p-6">
-        <p className="text-sm">
-          <span className="text-[var(--muted)]">Amount:</span> {fmtUsd(row.amount_cents)}
+    <main className="mx-auto max-w-md px-6 py-14 md:py-20">
+      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400/80">AgentCash</p>
+      <h1 className="mt-2 text-2xl font-bold tracking-tight text-[color:var(--fg)]">Approve spend</h1>
+      <div className="ac-card mt-8 p-7">
+        <p className="text-sm text-[color:var(--muted)]">
+          <span className="text-[color:var(--muted-2)]">Amount:</span>{" "}
+          <span className="font-semibold text-[color:var(--fg)]">{fmtUsd(row.amount_cents)}</span>
         </p>
-        <p className="text-sm">
-          <span className="text-[var(--muted)]">Merchant:</span> {row.merchant}
+        <p className="mt-2 text-sm text-[color:var(--muted)]">
+          <span className="text-[color:var(--muted-2)]">Merchant:</span>{" "}
+          <span className="text-[color:var(--fg)]">{row.merchant}</span>
         </p>
-        <p className="mt-2 text-sm">
-          <span className="text-[var(--muted)]">Intent:</span> {row.intent}
+        <p className="mt-3 text-sm leading-relaxed text-[color:var(--fg)]">
+          <span className="text-[color:var(--muted-2)]">Intent:</span> {row.intent}
         </p>
         {row.source_context ? (
-          <p className="text-xs text-[var(--muted)]">Source: {row.source_context}</p>
+          <p className="mt-2 text-xs text-[color:var(--muted)]">Source: {row.source_context}</p>
         ) : null}
-        <p className="mt-2 text-xs text-[var(--muted)]">
+        <p className="mt-3 text-xs text-[color:var(--muted)]">
           Card: {row.card_kind}
           {row.card_kind === "subscription_lock"
             ? ` · expires ${row.subscription_period_days ?? 30}d after approval`
             : ""}
         </p>
 
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-8 flex flex-wrap items-center gap-3">
           {row.status === "pending" ? (
             <>
               <form action={decide}>
                 <input type="hidden" name="token" value={token} />
                 <input type="hidden" name="decision" value="approved" />
-                <button className="rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-black">
+                <button type="submit" className="ac-btn-primary px-5 py-2.5 text-sm">
                   Approve
                 </button>
               </form>
               <form action={decide}>
                 <input type="hidden" name="token" value={token} />
                 <input type="hidden" name="decision" value="denied" />
-                <button className="rounded-md bg-red-500/80 px-4 py-2 text-sm font-medium text-white">
+                <button
+                  type="submit"
+                  className="rounded-lg border border-red-500/40 bg-red-500/15 px-5 py-2.5 text-sm font-semibold text-red-200 transition hover:bg-red-500/25"
+                >
                   Deny
                 </button>
               </form>
@@ -110,8 +117,8 @@ export default async function ApprovePage({
           )}
         </div>
       </div>
-      <p className="mt-4 text-xs text-[var(--muted)]">
-        Approvals are token-scoped: anyone with this URL can decide, so treat it like a one-time code.
+      <p className="mt-6 text-xs leading-relaxed text-[color:var(--muted)]">
+        This link acts like a one-time code — anyone with the URL can decide while the request is pending.
       </p>
     </main>
   );
