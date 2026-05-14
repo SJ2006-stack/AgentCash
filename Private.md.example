@@ -12,6 +12,36 @@
 
 ---
 
+## Subdomains (maintain)
+
+Official **AgentCash** host map — keep this table current when DNS, Workers, or Supabase redirect URLs change. Treat it as the source of truth for which hostname serves what.
+
+| Hostname | Purpose |
+|----------|---------|
+| `agentcash.tech` | **Landing page** — marketing / public homepage |
+| `app.agentcash.tech` | **Product** — this repo’s Next.js app (dashboard, approvals UI, webhooks today) |
+| `api.agentcash.tech` | **APIs** — agent REST (`/api/v1/*`), webhooks, programmatic entry (may route to the same Worker as `app` initially, or a dedicated Worker later) |
+| `docs.agentcash.tech` | **Docs** — product & developer documentation site |
+| `auth.agentcash.tech` | **Auth** — login / SSO / Supabase Auth callbacks when split from the main app |
+| `status.agentcash.tech` | **Status page** — uptime & incident comms |
+
+**Env:** set `NEXT_PUBLIC_SITE_URL`, `APPROVAL_BASE_URL`, and OAuth/magic-link callback URLs to the **canonical** origins you expose (often `https://app.agentcash.tech` until `api` / `auth` are isolated on their own hostnames).
+
+```mermaid
+flowchart LR
+  L["agentcash.tech (landing)"]
+  P["app.agentcash.tech (product)"]
+  A["api.agentcash.tech (APIs)"]
+  D["docs.agentcash.tech (docs)"]
+  U["auth.agentcash.tech (auth)"]
+  S["status.agentcash.tech (status)"]
+  L --> P
+  P -.-> A
+  U -.-> P
+```
+
+---
+
 ## Guardrails (fill in)
 
 <!-- Example sections — replace with your rules -->

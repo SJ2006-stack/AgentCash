@@ -13,7 +13,7 @@ Monorepo:
 
 ## Local guardrails (`Private.md`)
 
-Create a **`Private.md`** file at the **repo root** for your private instructions, todos, and agent guardrails. You can run `cp Private.md.example Private.md` and customize. **`Private.md`** is listed in **`.gitignore`** so it stays on your machine and is **not pushed to GitHub**. Cursor loads **`.cursor/rules/agentcash-private.mdc`**, which tells the agent to read `Private.md` when it exists before building.
+Create a **`Private.md`** file at the **repo root** for your private instructions, todos, and agent guardrails. You can run `cp Private.md.example Private.md` and customize. It also holds the **AgentCash subdomain map** (`agentcash.tech`, `app.`, `api.`, `docs.`, `auth.`, `status.`) for DNS and env alignment. **`Private.md`** is listed in **`.gitignore`** so it stays on your machine and is **not pushed to GitHub**. Cursor loads **`.cursor/rules/agentcash-private.mdc`**, which tells the agent to read `Private.md` when it exists before building.
 
 ## What changed in v0.15 (power features)
 

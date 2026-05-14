@@ -4,6 +4,10 @@ This app uses [**OpenNext for Cloudflare**](https://opennext.js.org/cloudflare) 
 
 > **Product note:** This is a **Workers**-style deployment (serverful Worker + asset binding), not a classic “static HTML only” GitHub Pages site. In the Cloudflare dashboard you connect the Git repo to a **Worker** (Workers Builds) or use the **Pages** product only if it supports your Worker + deploy command flow—see [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/).
 
+## AgentCash hostnames (DNS)
+
+Target subdomain map (**`agentcash.tech`** → landing, **`app.`** → product, **`api.`** → APIs, **`docs.`**, **`auth.`**, **`status.`**) is maintained in **`Private.md`** at the repo root (local, gitignored) and mirrored in **`Private.md.example`** (committed). Point Cloudflare DNS, custom domains on the Worker, and Supabase auth redirect URLs to match that map when you wire production.
+
 ## Prerequisites
 
 - Node **22+** (repo has `.node-version` and `engines` in `package.json`).

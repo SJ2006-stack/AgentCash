@@ -12,3 +12,5 @@ alwaysApply: true
 3. **`Private.md` must never be committed** — it is gitignored. Do not remove it from `.gitignore` or add secrets to tracked files.
 
 4. If `Private.md` is missing, proceed from the user message and existing repo docs (`README.md`, `docs/CLOUDFLARE.md`).
+
+5. **Subdomains:** the canonical **AgentCash** hostname map (`agentcash.tech`, `app.`, `api.`, `docs.`, `auth.`, `status.`) lives under **“Subdomains (maintain)”** in `Private.md` (and the same block in committed `Private.md.example`). Align DNS, Workers routes, and env URLs when you change hosting.
