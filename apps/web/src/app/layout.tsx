@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Geist } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { readWorkerEnv } from "@/lib/env/worker-env";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -25,7 +28,7 @@ function publicSupabaseInlineScript(): string | null {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const inlineEnv = publicSupabaseInlineScript();
   return (
-    <html lang="en" className={dmSans.variable}>
+    <html lang="en" className={cn("dark font-sans", geist.variable, dmSans.variable)}>
       <head>
         {inlineEnv ? (
           <script
