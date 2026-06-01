@@ -8,7 +8,7 @@
 ## Product
 
 - **Name:** AgentCash  
-- **Repo:** monorepo (`apps/web`, `packages/mandate-engine`, MCP server, CLI, Supabase).
+- **Repo:** monorepo (`apps/web` — landing + health API; x402 task router in progress).
 
 ---
 
@@ -19,13 +19,13 @@ Official **AgentCash** host map — keep this table current when DNS, Workers, o
 | Hostname | Purpose |
 |----------|---------|
 | `agentcash.tech` | **Landing page** — marketing / public homepage |
-| `app.agentcash.tech` | **Product** — this repo’s Next.js app (dashboard, approvals UI, webhooks today) |
-| `api.agentcash.tech` | **APIs** — agent REST (`/api/v1/*`), webhooks, programmatic entry (may route to the same Worker as `app` initially, or a dedicated Worker later) |
+| `app.agentcash.tech` | **Product** — this repo’s Next.js app (landing; dashboard/auth TBD) |
+| `api.agentcash.tech` | **APIs** — x402 task router & programmatic entry (may share Worker with `app` initially) |
 | `docs.agentcash.tech` | **Docs** — product & developer documentation site |
 | `auth.agentcash.tech` | **Auth** — login / SSO / Supabase Auth callbacks when split from the main app |
 | `status.agentcash.tech` | **Status page** — uptime & incident comms |
 
-**Env:** set `NEXT_PUBLIC_SITE_URL`, `APPROVAL_BASE_URL`, and OAuth/magic-link callback URLs to the **canonical** origins you expose (often `https://app.agentcash.tech` until `api` / `auth` are isolated on their own hostnames).
+**Env:** set `NEXT_PUBLIC_SITE_URL` and auth callback URLs to the **canonical** origins you expose (often `https://app.agentcash.tech` until `api` / `auth` are isolated).
 
 ```mermaid
 flowchart LR
@@ -49,24 +49,15 @@ flowchart LR
 ### Scope
 
 - (e.g. “No drive-by refactors outside the task.”)
-- (e.g. “Match existing patterns in `apps/web` and `packages/mandate-engine`.”)
+- (e.g. “Match existing patterns in `apps/web`.”)
 
 ### Naming & branding
 
 - Prefer **AgentCash** in user-facing copy and new docs.
-- Internal package names (`@mandate/*`) may stay until a deliberate rename.
 
 ### Security
 
 - Never commit `.env.local`, `Private.md` contents, or API keys into tracked files.
-- Service role and Stripe keys only in env / dashboard.
-
-### Reliability (Agent API — May 2026)
-
-- **`/api/v1/*`** uses `runAgentRoute` (`apps/web/src/app/api/v1/_lib/run-agent-route.ts`): IP cap + per-agent tier limits (`src/lib/api/rate-limit.ts`) so a buggy agent or script cannot hammer **Stripe Issuing** / **Supabase** in a tight loop. Defaults are conservative; tune with `AGENT_API_*` env vars (see `apps/web/.env.local.example` and `docs/CLOUDFLARE.md`). Limits are **best-effort per Worker isolate** (reset on cold start), not a global DDoS product.
-- **Errors**: `toErrorResponse` (`src/lib/api/http-errors.ts`) maps Stripe-like errors, PostgREST-like errors, JSON parse failures, and config errors to stable JSON without leaking raw vendor payloads. Policy violations stay **422** via `jsonFromEngine`.
-- **Dashboard MCP key rotation**: `POST /api/agents/[id]/mcp-key` is capped per user per hour (`MCP_KEY_ROTATE_MAX_PER_HOUR`).
-- When extending APIs, reuse **`runAgentRoute`** + **`toErrorResponse`** instead of ad-hoc `catch` messages.
 
 ### Deploy
 

@@ -2,7 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 /**
  * Read env from the Cloudflare Worker/Pages `env` binding first, then `process.env`.
- * Dashboard and wrangler vars live on `env`; Next.js often inlines `process.env.NEXT_PUBLIC_*`
+ * Wrangler/runtime vars live on `env`; Next.js often inlines `process.env.NEXT_PUBLIC_*`
  * at build time (empty in CI), so `process.env` alone misses runtime Cloudflare configuration.
  */
 export function readWorkerEnv(key: string): string | undefined {
