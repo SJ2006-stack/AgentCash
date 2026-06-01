@@ -29,5 +29,5 @@ jobs:
           cache: "npm"
           cache-dependency-path: package-lock.json
       - run: npm ci
-      - name: Same path as Cloudflare Pages (engine + OpenNext web)
+      - name: OpenNext web bundle (Cloudflare path)
         run: npm run build:cf

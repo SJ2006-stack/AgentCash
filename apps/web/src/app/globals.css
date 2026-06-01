@@ -99,13 +99,51 @@ html {
 body {
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 100% 70% at 50% -30%, rgba(52, 211, 153, 0.1), transparent 55%),
+    radial-gradient(ellipse 100% 70% at 50% -30%, rgba(52, 211, 153, 0.12), transparent 55%),
     radial-gradient(ellipse 55% 45% at 100% 0%, var(--blue-glow), transparent 50%),
-    radial-gradient(ellipse 40% 35% at 0% 80%, rgba(52, 211, 153, 0.04), transparent 45%);
+    radial-gradient(ellipse 40% 35% at 0% 80%, rgba(139, 92, 246, 0.06), transparent 45%),
+    linear-gradient(180deg, transparent 0%, rgba(5, 8, 12, 0.4) 100%);
   background-attachment: fixed;
   color: var(--fg);
   font-feature-settings: "ss01" on, "cv02" on;
   -webkit-font-smoothing: antialiased;
+}
+
+.ac-terminal {
+  background:
+    linear-gradient(165deg, rgba(12, 18, 28, 0.95) 0%, rgba(5, 8, 12, 0.98) 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(148, 163, 184, 0.03) 2px,
+      rgba(148, 163, 184, 0.03) 4px
+    );
+  font-family: var(--font-mono);
+}
+
+.ac-scanline::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(52, 211, 153, 0.03) 50%,
+    transparent 100%
+  );
+  animation: ac-scan 8s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes ac-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
 }
 
 a {

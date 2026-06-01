@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { CreditCard, ShieldCheck, Users } from "lucide-react";
+import { Gauge, Route, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -12,31 +12,31 @@ const features: {
   icon: LucideIcon;
 }[] = [
   {
-    title: "Mandates",
-    description: "Per-request caps, monthly ceilings, and allowlists so agents cannot improvise limits.",
+    title: "Micro-budgets",
+    description: "Cap every run at cents, not cards — hard stops before an agent overspends.",
+    icon: Gauge,
+  },
+  {
+    title: "Task Router",
+    description: "Queue work, attach policy, and release funds only when the task is allowed to proceed.",
+    icon: Route,
+  },
+  {
+    title: "Human approvals",
+    description: "Escalate edge cases to Slack, email, or magic links when spend needs a second pair of eyes.",
     icon: ShieldCheck,
-  },
-  {
-    title: "Human in the loop",
-    description: "Slack, WhatsApp, or magic links when a payment needs a second pair of eyes.",
-    icon: Users,
-  },
-  {
-    title: "Issuing-ready",
-    description: "Stripe Issuing test cards with shadow mode — rehearse real flows without surprise bills.",
-    icon: CreditCard,
   },
 ];
 
 export function Features() {
   return (
-    <Section>
+    <Section id="platform" className="scroll-mt-24">
       <Container>
         <Reveal>
           <SectionHeading
             eyebrow="Platform"
-            title="Guardrails built for autonomous spend"
-            description="Every path — MCP, REST, or dashboard — runs through the same mandate engine."
+            title="Spend rails built for autonomous runs"
+            description="One control plane for CLI agents, HTTP tools, and future registry integrations — same guardrails everywhere."
           />
         </Reveal>
 
@@ -63,7 +63,7 @@ function FeatureCard({
 }) {
   return (
     <li>
-      <Card className="h-full border-white/10 bg-white/[0.02] ring-white/10 transition hover:border-emerald-400/20 hover:bg-white/[0.04]">
+      <Card className="h-full border-white/10 bg-white/[0.02] ring-white/10 transition hover:border-emerald-400/25 hover:bg-white/[0.04]">
         <CardHeader className="gap-4">
           <div
             className={cn(

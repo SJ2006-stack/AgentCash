@@ -8,7 +8,6 @@ initOpenNextCloudflareForDev();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@mandate/mandate-engine"],
   outputFileTracingRoot: path.join(__dirname, "../.."),
 };
 

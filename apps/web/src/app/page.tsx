@@ -1,20 +1,16 @@
-import { redirect } from "next/navigation";
+import { CliDemo } from "@/components/landing/CliDemo";
 import { Features } from "@/components/landing/Features";
 import { Hero } from "@/components/landing/Hero";
+import { Roadmap } from "@/components/landing/Roadmap";
 import { SocialRows } from "@/components/landing/SocialRows";
-import { createClient } from "@/lib/supabase/server";
 
-export default async function Home() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (user) redirect("/dashboard");
-
+export default function Home() {
   return (
     <main>
       <Hero />
+      <CliDemo />
       <Features />
+      <Roadmap />
       <SocialRows />
     </main>
   );
