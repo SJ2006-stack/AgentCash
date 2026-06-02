@@ -77,6 +77,9 @@ npm run deploy:cf
 |--------|-----|
 | Wrangler “workspace root” error | Deploy from **`apps/web`**. |
 | Peer / Next version errors | `apps/web` uses Next `>=15.5.18` for `@opennextjs/cloudflare`. |
+| `Cannot find native binding (@ast-grep/napi)` on Linux CI | `@opennextjs/cloudflare` uses `@ast-grep/napi`. Lockfiles generated on macOS can omit Linux optional bindings ([npm#4828](https://github.com/npm/cli/issues/4828)). `apps/web` pins `@ast-grep/napi-linux-x64-gnu` in `optionalDependencies` so `npm ci` on Cloudflare (linux x64) installs the binding. Commit an updated `package-lock.json` after changing that pin. |
+
+No extra Cloudflare dashboard env vars are required for this fix.
 
 ## Files
 
