@@ -12,10 +12,19 @@
     "@types/json-schema": "7.0.15"
   },
   "scripts": {
-    "build": "npm run build:cf",
+    "build": "npm run build:registry && npm run build:task-router && npm run build:cf && npm run build:x402",
     "build:cf": "npm run build:cf -w web",
+    "build:registry": "npm run build -w @agentcash/registry",
+    "build:task-router": "npm run build -w @agentcash/task-router",
+    "build:x402": "npm run build -w @agentcash/x402-client",
+    "test:registry": "npm run test -w @agentcash/registry",
+    "test:task-router": "npm run test -w @agentcash/task-router",
     "dev:web": "npm run dev -w web",
-    "deploy:cf": "npm run build:cf && cd apps/web && npx wrangler deploy"
+    "deploy:cf": "npm run build:cf && cd apps/web && npx wrangler deploy",
+    "agentcash": "npm run agentcash -w @agentcash/x402-client --",
+    "day1:pay": "npm run agentcash -w @agentcash/x402-client -- pay",
+    "day1:wallet": "npm run agentcash -w @agentcash/x402-client -- wallet info",
+    "day1:modes": "npm run agentcash -w @agentcash/x402-client -- wallet modes"
   },
   "devDependencies": {
     "shadcn": "^4.7.0"

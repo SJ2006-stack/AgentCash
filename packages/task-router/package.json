@@ -1,0 +1,34 @@
+{
+  "name": "@agentcash/task-router",
+  "version": "0.1.0",
+  "description": "AgentCash task router v0 — quote and run multi-step x402 tasks",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "agentcash": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test dist/golden-tasks.test.js"
+  },
+  "dependencies": {
+    "@agentcash/registry": "0.1.0",
+    "@agentcash/x402-client": "0.1.0",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

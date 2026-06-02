@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "../styles/design-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -179,6 +180,16 @@ code {
   .ac-marquee-track {
     animation: none;
   }
+  .ac-scanline::after {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -354,5 +365,58 @@ select.ac-input {
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .ac-display {
+    font-size: var(--ac-text-display);
+    line-height: var(--ac-text-display-lh);
+    letter-spacing: var(--ac-text-display-tracking);
+    font-weight: var(--ac-text-display-weight);
+  }
+
+  .ac-h1 {
+    font-size: var(--ac-text-h1);
+    line-height: var(--ac-text-h1-lh);
+    letter-spacing: var(--ac-text-h1-tracking);
+    font-weight: var(--ac-text-h1-weight);
+  }
+
+  .ac-h2 {
+    font-size: var(--ac-text-h2);
+    line-height: var(--ac-text-h2-lh);
+    letter-spacing: var(--ac-text-h2-tracking);
+    font-weight: var(--ac-text-h2-weight);
+  }
+
+  .ac-h3 {
+    font-size: var(--ac-text-h3);
+    line-height: var(--ac-text-h3-lh);
+    letter-spacing: var(--ac-text-h3-tracking);
+    font-weight: var(--ac-text-h3-weight);
+  }
+
+  .ac-h4 {
+    font-size: var(--ac-text-h4);
+    line-height: var(--ac-text-h4-lh);
+    letter-spacing: var(--ac-text-h4-tracking);
+    font-weight: var(--ac-text-h4-weight);
+  }
+
+  .ac-body {
+    font-size: var(--ac-text-body);
+    line-height: var(--ac-text-body-lh);
+  }
+
+  .ac-body-lg {
+    font-size: var(--ac-text-body-lg);
+    line-height: var(--ac-text-body-lg-lh);
+  }
+
+  .ac-mono {
+    font-family: var(--ac-font-mono);
+    font-size: var(--ac-text-mono);
+    line-height: var(--ac-text-mono-lh);
   }
 }

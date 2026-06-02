@@ -24,11 +24,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "AgentCash — micro-payments for AI agents",
   description:
-    "Give an AI $0.10 and a task. AgentCash routes spend through guardrails — task router, budgets, and approvals coming soon.",
+    "Give an AI $0.10 and a task. AgentCash is the control plane for x402 USDC spend — budgets, task routing, and human approvals before a cent leaves your wallet.",
   openGraph: {
-    title: "AgentCash",
-    description: "Micro-payments and task routing for autonomous agents.",
+    title: "AgentCash — micro-payments for AI agents",
+    description:
+      "x402 USDC payments, task routing, and guardrails for autonomous agents. Open source CLI and registry.",
     type: "website",
+    siteName: "AgentCash",
   },
 };
 

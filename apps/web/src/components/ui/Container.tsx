@@ -9,7 +9,7 @@ interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
 const sizes = {
   sm: "max-w-3xl",
   md: "max-w-5xl",
-  lg: "max-w-6xl",
+  lg: "max-w-7xl",
 } as const;
 
 export function Container({ className, children, size = "lg", ...props }: ContainerProps) {

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Gauge, Route, ShieldCheck } from "lucide-react";
+import { Gauge, Route, ShieldCheck, Wallet } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -10,11 +10,13 @@ const features: {
   title: string;
   description: string;
   icon: LucideIcon;
+  featured?: boolean;
 }[] = [
   {
     title: "Micro-budgets",
     description: "Cap every run at cents, not cards — hard stops before an agent overspends.",
     icon: Gauge,
+    featured: true,
   },
   {
     title: "Task Router",
@@ -26,11 +28,16 @@ const features: {
     description: "Escalate edge cases to Slack, email, or magic links when spend needs a second pair of eyes.",
     icon: ShieldCheck,
   },
+  {
+    title: "Agent wallets",
+    description: "Dedicated wallets per agent or environment — testnet today, mainnet when you're ready.",
+    icon: Wallet,
+  },
 ];
 
 export function Features() {
   return (
-    <Section id="platform" className="scroll-mt-24">
+    <Section id="platform" className="scroll-mt-24 border-t border-[color:var(--ac-border)]">
       <Container>
         <Reveal>
           <SectionHeading
@@ -40,9 +47,13 @@ export function Features() {
           />
         </Reveal>
 
-        <ul className="mt-12 grid gap-4 sm:grid-cols-3">
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <Reveal key={feature.title} delay={0.05 * index}>
+            <Reveal
+              key={feature.title}
+              delay={0.05 * index}
+              className={cn(feature.featured && "sm:col-span-2 lg:col-span-1 lg:row-span-2")}
+            >
               <FeatureCard {...feature} />
             </Reveal>
           ))}
@@ -56,23 +67,26 @@ function FeatureCard({
   title,
   description,
   icon: Icon,
+  featured,
 }: {
   title: string;
   description: string;
   icon: LucideIcon;
+  featured?: boolean;
 }) {
   return (
-    <li>
-      <Card className="h-full border-white/10 bg-white/[0.02] ring-white/10 transition hover:border-emerald-400/25 hover:bg-white/[0.04]">
+    <li className="h-full list-none">
+      <Card
+        className={cn(
+          "h-full border-white/10 bg-white/[0.02] ring-white/10 transition hover:border-emerald-400/25 hover:bg-white/[0.04]",
+          featured && "border-emerald-400/20 bg-emerald-400/[0.03] lg:min-h-[280px]",
+        )}
+      >
         <CardHeader className="gap-4">
-          <div
-            className={cn(
-              "flex size-10 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
-            )}
-          >
+          <div className="flex size-10 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300">
             <Icon className="size-5" aria-hidden />
           </div>
-          <CardTitle className="text-base text-emerald-300/90">{title}</CardTitle>
+          <CardTitle className="ac-h4 text-emerald-300/90">{title}</CardTitle>
         </CardHeader>
         <CardContent className="-mt-2">
           <CardDescription className="text-sm leading-relaxed text-muted-foreground">{description}</CardDescription>

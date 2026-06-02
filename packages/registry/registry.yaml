@@ -1,0 +1,93 @@
+# AgentCash registry v0 — founder-curated seed list (listed, not endorsed)
+# PRs: opt-in only; see packages/registry/README.md
+
+entries:
+  - slug: brave-search-v1
+    name: Brave Search (x402)
+    url: https://api.search.brave.com
+    endpoint: https://api.search.brave.com/res/v1/web/search
+    price_usdc: 0.003
+    capability: search
+    chains: [base]
+    status: unverified
+
+  - slug: weatherapi-v1
+    name: Weather (Hugen x402 demo)
+    url: https://weather.hugen.tokyo
+    endpoint: https://weather.hugen.tokyo/weather/current
+    price_usdc: 0.01
+    capability: data
+    chains: [base]
+    status: confirmed
+
+  - slug: coingecko-price-v1
+    name: CoinGecko price (x402 gateway TBD)
+    url: https://www.coingecko.com
+    endpoint: https://api.coingecko.com/api/v3/simple/price
+    price_usdc: 0.002
+    capability: data
+    chains: [base]
+    status: unverified
+
+  - slug: birdeye-sol-v1
+    name: Birdeye Solana market data
+    url: https://birdeye.so
+    endpoint: https://public-api.birdeye.so/defi/price
+    price_usdc: 0.004
+    capability: data
+    chains: [base]
+    status: unverified
+
+  - slug: serper-search-v1
+    name: Serper Google search proxy
+    url: https://serper.dev
+    endpoint: https://google.serper.dev/search
+    price_usdc: 0.005
+    capability: search
+    chains: [base]
+    status: unverified
+
+  - slug: jina-reader-v1
+    name: Jina Reader (URL to markdown)
+    url: https://jina.ai
+    endpoint: https://r.jina.ai/
+    price_usdc: 0.002
+    capability: scrape
+    chains: [base]
+    status: unverified
+
+  - slug: firecrawl-scrape-v1
+    name: Firecrawl scrape
+    url: https://firecrawl.dev
+    endpoint: https://api.firecrawl.dev/v1/scrape
+    price_usdc: 0.008
+    capability: scrape
+    chains: [base]
+    status: unverified
+
+  - slug: helius-enrich-v1
+    name: Helius wallet enrich
+    url: https://helius.dev
+    endpoint: https://api.helius.xyz/v0/addresses
+    price_usdc: 0.006
+    capability: enrich
+    chains: [base]
+    status: unverified
+
+  - slug: dns-verify-v1
+    name: DNS TXT verify
+    url: https://dns.google
+    endpoint: https://dns.google/resolve
+    price_usdc: 0.001
+    capability: verify
+    chains: [base]
+    status: unverified
+
+  - slug: fal-image-v1
+    name: fal.ai image generate
+    url: https://fal.ai
+    endpoint: https://fal.run/fal-ai/flux/schnell
+    price_usdc: 0.02
+    capability: generate
+    chains: [base]
+    status: coming_soon

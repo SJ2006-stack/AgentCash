@@ -1,0 +1,29 @@
+{
+  "name": "@agentcash/registry",
+  "version": "0.1.0",
+  "description": "AgentCash x402 API registry — curated listings, capability lookup, price probes",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && cp registry.yaml dist/registry.yaml",
+    "test": "node --test dist/golden-registry.test.js"
+  },
+  "dependencies": {
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

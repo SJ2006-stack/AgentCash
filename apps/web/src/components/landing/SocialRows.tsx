@@ -1,86 +1,80 @@
-import { Bot, Coins, Route, Wallet } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Separator } from "@/components/ui/separator";
 import { Container } from "@/components/ui/Container";
+import { Section, SectionHeading } from "@/components/ui/Section";
+import { Reveal } from "@/components/landing/Reveal";
 import { cn } from "@/lib/utils";
 
-const integrations = [
-  { label: "x402", icon: Coins },
-  { label: "Task Router", icon: Route },
-  { label: "Agent wallets", icon: Wallet },
-  { label: "Tooling / MCP", icon: Bot },
+const worksWith = [
+  { name: "x402", sub: "HTTP 402 payments" },
+  { name: "Base", sub: "L2 settlement" },
+  { name: "USDC", sub: "Stable settlement" },
+  { name: "Cloudflare", sub: "Edge deploy" },
 ] as const;
 
-const socialLinks = [
-  { label: "GitHub", href: "https://github.com", icon: GithubIcon },
-  { label: "X", href: "https://x.com", icon: XIcon },
+const metrics = [
+  { value: "10k+", label: "Micro-payments routed", note: "Illustrative" },
+  { value: "<$0.01", label: "Typical per-call spend", note: "Illustrative" },
+  { value: "24/7", label: "Agent-ready settlement", note: "Illustrative" },
 ] as const;
 
 export function SocialRows() {
   return (
-    <section className="border-t border-border/60 py-10 pb-16">
-      <Container className="flex flex-col gap-8">
-        <IntegrationRow />
-        <Separator className="bg-border/60" />
-        <SocialLinksRow />
+    <Section id="trust" className="scroll-mt-24 border-t border-border/50 py-16 sm:py-20">
+      <Container>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Social proof"
+            title="Built for agents, wired to the stack you already use"
+            description="AgentCash sits on open payment rails — x402 merchants, USDC on Base, and edge hosting. Metrics below are placeholders until we publish live totals."
+            align="center"
+            className="max-w-3xl"
+          />
+        </Reveal>
+
+        <Reveal delay={0.06} className="mt-12">
+          <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Works with
+          </p>
+          <LogoMarquee />
+        </Reveal>
+
+        <ul className="mt-14 grid gap-4 sm:grid-cols-3">
+          {metrics.map((metric, index) => (
+            <Reveal key={metric.label} delay={0.04 * index}>
+              <li className="ac-card flex flex-col items-center px-6 py-8 text-center">
+                <span className="bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-3xl font-semibold tracking-tight text-transparent">
+                  {metric.value}
+                </span>
+                <span className="mt-2 text-sm text-foreground/90">{metric.label}</span>
+                <span className="mt-3 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80">
+                  {metric.note}
+                </span>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
       </Container>
-    </section>
+    </Section>
   );
 }
 
-function IntegrationRow() {
+function LogoMarquee() {
+  const track = [...worksWith, ...worksWith];
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">On the roadmap</p>
-      <ul className="flex flex-wrap items-center gap-2">
-        {integrations.map(({ label, icon: Icon }) => (
-          <li key={label}>
-            <Badge variant="outline" className="gap-2 border-white/10 bg-white/[0.03] px-3 py-1.5 text-foreground/80">
-              <Icon className="size-3.5 text-emerald-400/90" aria-hidden />
-              {label}
-            </Badge>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function SocialLinksRow() {
-  return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm text-muted-foreground">AgentCash · micro-payments for agents</p>
-      <div className="flex items-center gap-2">
-        {socialLinks.map(({ label, href, icon: Icon }) => (
-          <Button
-            key={label}
-            variant="outline"
-            size="icon"
-            className="border-white/10 bg-white/[0.02] text-muted-foreground hover:border-emerald-400/25 hover:text-foreground"
-            render={<a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} />}
-            nativeButton={false}
+    <div
+      className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+      aria-hidden
+    >
+      <div className="ac-marquee-track flex w-max items-center gap-10 px-4 sm:gap-14">
+        {track.map((logo, i) => (
+          <div
+            key={`${logo.name}-${i}`}
+            className="flex shrink-0 flex-col items-center gap-1 rounded-xl border border-white/8 bg-white/[0.02] px-8 py-4"
           >
-            <Icon className="size-4" />
-          </Button>
+            <span className="text-lg font-semibold tracking-tight text-foreground/90">{logo.name}</span>
+            <span className="text-xs text-muted-foreground">{logo.sub}</span>
+          </div>
         ))}
       </div>
     </div>
-  );
-}
-
-function GithubIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={cn("size-4 fill-current", className)} aria-hidden>
-      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-    </svg>
-  );
-}
-
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={cn("size-4 fill-current", className)} aria-hidden>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
   );
 }

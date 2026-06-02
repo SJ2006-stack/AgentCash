@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { cn } from "@/lib/utils/cn";
 
 interface SectionProps extends HTMLAttributes<HTMLElement> {
@@ -8,7 +9,7 @@ interface SectionProps extends HTMLAttributes<HTMLElement> {
 /** Vertical rhythm wrapper. Pairs with `Container` for horizontal width. */
 export function Section({ className, children, ...props }: SectionProps) {
   return (
-    <section className={cn("relative py-20 sm:py-28", className)} {...props}>
+    <section className={cn("relative py-[var(--ac-section-y)]", className)} {...props}>
       {children}
     </section>
   );
@@ -31,12 +32,10 @@ export function SectionHeading({ eyebrow, title, description, align = "left", cl
         className,
       )}
     >
-      {eyebrow ? (
-        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300/90">{eyebrow}</span>
-      ) : null}
-      <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h2>
+      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+      <h2 className="ac-h2 text-foreground">{title}</h2>
       {description ? (
-        <p className="text-base leading-relaxed text-white/55 sm:text-lg">{description}</p>
+        <p className="ac-body-lg text-muted-foreground">{description}</p>
       ) : null}
     </div>
   );

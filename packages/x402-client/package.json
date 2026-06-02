@@ -1,0 +1,44 @@
+{
+  "name": "@agentcash/x402-client",
+  "version": "0.1.0",
+  "description": "AgentCash CLI — x402 USDC payments with BYOK local wallet",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "agentcash": "./dist/cli.js",
+    "agentcash-x402": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "agentcash": "node dist/cli.js",
+    "pay": "node dist/cli.js pay",
+    "wallet:create": "node dist/cli.js wallet create",
+    "wallet:info": "node dist/cli.js wallet info",
+    "wallet:chains": "node dist/cli.js wallet chains",
+    "doctor": "node dist/cli.js doctor"
+  },
+  "dependencies": {
+    "@coinbase/cdp-sdk": "^1.51.0",
+    "@x402/core": "~2.14.0",
+    "@x402/evm": "~2.14.0",
+    "@x402/fetch": "~2.14.0",
+    "commander": "^14.0.0",
+    "dotenv": "^16.4.7",
+    "viem": "^2.39.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
