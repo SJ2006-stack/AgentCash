@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { ScrollProgress } from "@/components/magicui/scroll-progress";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         style={{ fontFamily: "var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif" }}
       >
         <SiteHeader />
+        <ScrollProgress className="top-14 sm:top-16" />
         {children}
       </body>
     </html>

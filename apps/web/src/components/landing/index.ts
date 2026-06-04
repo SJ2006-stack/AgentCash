@@ -1,4 +1,6 @@
+export { AgentCashDock } from "./AgentCashDock";
 export { ComingSoon } from "./ComingSoon";
+export { ReviewsMarquee } from "./ReviewsMarquee";
 export { CliDemo } from "./CliDemo";
 export { DeveloperSection } from "./DeveloperSection";
 export { FAQ } from "./FAQ";
