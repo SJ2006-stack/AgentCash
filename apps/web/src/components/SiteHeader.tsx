@@ -3,17 +3,15 @@
 import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { usePrefersReducedMotion } from "@/lib/motion";
 import { Container } from "@/components/ui/Container";
+import { nav, URLS } from "@/content/landing";
 import { cn } from "@/lib/utils";
 
-const nav = [
-  { label: "Docs", href: "https://docs.agentcash.tech", external: true },
-  { label: "Status", href: "https://status.agentcash.tech", external: true },
-  { label: "Contact", href: "mailto:hello@agentcash.tech", external: true },
-] as const;
+const navLinkClass =
+  "rounded-md text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--ac-bg)]";
 
 export function SiteHeader() {
   const { scrollY } = useScroll();
@@ -24,6 +22,20 @@ export function SiteHeader() {
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 12);
   });
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   return (
     <>
@@ -36,7 +48,12 @@ export function SiteHeader() {
         )}
       >
         <Container className="flex h-14 items-center justify-between gap-4 sm:h-16">
-          <Link href="/" className="group flex items-center gap-2.5" onClick={() => setMenuOpen(false)}>
+          <Link
+            href="/"
+            className="group flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--ac-bg)]"
+            aria-label="AgentCash home"
+            onClick={() => setMenuOpen(false)}
+          >
             <span
               className="grid size-8 place-items-center rounded-[9px] border border-emerald-400/35 bg-gradient-to-br from-emerald-400/90 via-teal-400/75 to-cyan-500/65 font-mono text-xs font-bold tracking-tight text-slate-950 shadow-[var(--ac-shadow-glow)] transition group-hover:shadow-[0_0_28px_-4px_rgba(52,211,153,0.55)] sm:size-9 sm:rounded-[10px] sm:text-sm"
               aria-hidden
@@ -51,9 +68,15 @@ export function SiteHeader() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-sm text-muted-foreground transition hover:text-foreground"
-                {...("external" in item && item.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
+                className={navLinkClass}
+                {...(item.external
+                  ? {
+                      target: item.href.startsWith("mailto:") ? undefined : "_blank",
+                      rel: item.href.startsWith("mailto:") ? undefined : "noopener noreferrer",
+                      ...(item.href.startsWith("http")
+                        ? { "aria-label": `${item.label} (opens in a new tab)` }
+                        : {}),
+                    }
                   : {})}
               >
                 {item.label}
@@ -66,7 +89,7 @@ export function SiteHeader() {
               size="sm"
               className="hidden bg-gradient-to-br from-emerald-300 via-emerald-400 to-teal-500 text-emerald-950 shadow-[var(--ac-shadow-glow)] sm:inline-flex"
               render={
-                <a href="mailto:hello@agentcash.tech?subject=AgentCash%20early%20access" />
+                <a href={URLS.waitlist} aria-label="Join the AgentCash waitlist by email" />
               }
               nativeButton={false}
             >
@@ -75,7 +98,7 @@ export function SiteHeader() {
 
             <button
               type="button"
-              className="inline-flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-foreground transition hover:border-emerald-400/25 hover:bg-white/[0.06] md:hidden"
+              className="inline-flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-foreground transition hover:border-emerald-400/25 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/45 md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -114,7 +137,7 @@ export function SiteHeader() {
               aria-label="Mobile"
             >
               <div className="mb-8 flex items-center justify-between">
-                <span className="font-semibold tracking-tight text-foreground">Menu</span>
+                <span className="font-semibold tracking-tight text-foreground">Navigation</span>
                 <button
                   type="button"
                   className="inline-flex size-9 items-center justify-center rounded-lg border border-white/10 text-foreground"
@@ -136,10 +159,16 @@ export function SiteHeader() {
                     >
                       <Link
                         href={item.href}
-                        className="block rounded-lg px-3 py-3 text-base text-foreground transition hover:bg-white/[0.04]"
+                        className="block rounded-lg px-3 py-3 text-base text-foreground transition hover:bg-white/[0.04] focus-visible:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/45"
                         onClick={() => setMenuOpen(false)}
-                        {...("external" in item && item.external
-                          ? { target: "_blank", rel: "noopener noreferrer" }
+                        {...(item.external
+                          ? {
+                              target: item.href.startsWith("mailto:") ? undefined : "_blank",
+                              rel: item.href.startsWith("mailto:") ? undefined : "noopener noreferrer",
+                              ...(item.href.startsWith("http")
+                                ? { "aria-label": `${item.label} (opens in a new tab)` }
+                                : {}),
+                            }
                           : {})}
                       >
                         {item.label}
@@ -155,7 +184,8 @@ export function SiteHeader() {
                   className="w-full bg-gradient-to-br from-emerald-300 via-emerald-400 to-teal-500 text-emerald-950"
                   render={
                     <a
-                      href="mailto:hello@agentcash.tech?subject=AgentCash%20early%20access"
+                      href={URLS.waitlist}
+                      aria-label="Join the AgentCash waitlist by email"
                       onClick={() => setMenuOpen(false)}
                     />
                   }

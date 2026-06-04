@@ -3,20 +3,9 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { GradientText } from "@/components/ui/GradientText";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { problemSolution } from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
 import { cn } from "@/lib/utils";
-
-const problems = [
-  "Agents call paid APIs with no spend ceiling",
-  "One compromised tool can drain a shared wallet",
-  "Humans find out after the invoice, not before the charge",
-] as const;
-
-const solutions = [
-  "Hard budgets per task, enforced before settlement",
-  "Merchant allowlists and policy gates on every x402 intent",
-  "Approval flows when spend crosses your threshold",
-] as const;
 
 export function ProblemSolution() {
   return (
@@ -24,14 +13,14 @@ export function ProblemSolution() {
       <Container>
         <Reveal>
           <SectionHeading
-            eyebrow="The gap"
+            eyebrow={problemSolution.eyebrow}
             title={
               <>
-                Agents can spend money.{" "}
-                <GradientText variant="warm">Nothing stops them.</GradientText>
+                {problemSolution.titleLead}{" "}
+                <GradientText variant="warm">{problemSolution.titleAccent}</GradientText>
               </>
             }
-            description="Autonomous runs need payment rails — but credit cards and shared API keys weren't designed for machines making thousands of micro-decisions."
+            description={problemSolution.description}
             align="center"
             className="max-w-3xl"
           />
@@ -41,16 +30,16 @@ export function ProblemSolution() {
           <Reveal delay={0.05}>
             <NarrativeCard
               variant="problem"
-              title="Without guardrails"
-              items={problems}
+              title={problemSolution.problem.title}
+              items={problemSolution.problem.items}
               icon={AlertTriangle}
             />
           </Reveal>
           <Reveal delay={0.1}>
             <NarrativeCard
               variant="solution"
-              title="With AgentCash"
-              items={solutions}
+              title={problemSolution.solution.title}
+              items={problemSolution.solution.items}
               icon={CheckCircle2}
             />
           </Reveal>

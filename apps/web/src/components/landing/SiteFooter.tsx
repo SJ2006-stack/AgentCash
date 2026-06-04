@@ -1,12 +1,6 @@
 import Link from "next/link";
+import { footer } from "@/content/landing";
 import { Container } from "@/components/ui/Container";
-
-const FOOTER_LINKS = [
-  { label: "Documentation", href: "https://docs.agentcash.tech" },
-  { label: "Status", href: "https://status.agentcash.tech" },
-  { label: "Contact", href: "mailto:hello@agentcash.tech" },
-  { label: "API health", href: "/api/v1/health" },
-] as const;
 
 function isExternalHref(href: string) {
   return href.startsWith("http") || href.startsWith("mailto:");
@@ -18,7 +12,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-[color:var(--ac-border)] bg-[#040608]/90 pb-10 pt-12">
       <Container>
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-sm">
             <Link href="/" className="inline-flex items-center gap-2.5">
               <span
@@ -29,42 +23,46 @@ export function SiteFooter() {
               </span>
               <span className="text-[15px] font-semibold tracking-tight text-foreground">AgentCash</span>
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Micro-payments and task routing for autonomous agents — x402, USDC on Base, open source CLI.
-            </p>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{footer.tagline}</p>
           </div>
 
-          <nav aria-label="Footer">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-foreground/85">Links</p>
-            <ul className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-6">
-              {FOOTER_LINKS.map((link) => (
-                <li key={link.label}>
-                  {isExternalHref(link.href) ? (
-                    <a
-                      href={link.href}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="grid gap-8 sm:grid-cols-3 sm:gap-10">
+            {footer.columns.map((column) => (
+              <nav key={column.title} aria-label={column.title}>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-foreground/85">
+                  {column.title}
+                </p>
+                <ul className="mt-4 flex flex-col gap-2.5">
+                  {column.links.map((link) => (
+                    <li key={link.label}>
+                      {isExternalHref(link.href) ? (
+                        <a
+                          href={link.href}
+                          target={link.href.startsWith("http") ? "_blank" : undefined}
+                          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
 
         <div className="mt-10 flex flex-col gap-3 border-t border-[color:var(--ac-border)] pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">© {year} AgentCash. All rights reserved.</p>
-          <p className="text-xs text-muted-foreground/70">Open source · x402 · USDC on Base</p>
+          <p className="text-xs text-muted-foreground/70">{footer.legal}</p>
         </div>
       </Container>
     </footer>

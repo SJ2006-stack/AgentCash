@@ -6,6 +6,7 @@ export { MarqueeReveal } from "./MarqueeReveal";
 export { ReviewsMarquee } from "./ReviewsMarquee";
 export { CliDemo } from "./CliDemo";
 export { DeveloperSection } from "./DeveloperSection";
+export { DocsPreview } from "./DocsPreview";
 export { FAQ } from "./FAQ";
 export { Features } from "./Features";
 export { FinalCTA } from "./FinalCTA";

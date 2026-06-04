@@ -3,37 +3,16 @@ import { Gauge, Route, ShieldCheck, Wallet } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { features as featureCopy, featuresSection } from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
 import { cn } from "@/lib/utils";
 
-const features: {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  featured?: boolean;
-}[] = [
-  {
-    title: "Micro-budgets",
-    description: "Cap every run at cents, not cards — hard stops before an agent overspends.",
-    icon: Gauge,
-    featured: true,
-  },
-  {
-    title: "Task Router",
-    description: "Queue work, attach policy, and release funds only when the task is allowed to proceed.",
-    icon: Route,
-  },
-  {
-    title: "Human approvals",
-    description: "Escalate edge cases to Slack, email, or magic links when spend needs a second pair of eyes.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Agent wallets",
-    description: "Dedicated wallets per agent or environment — testnet today, mainnet when you're ready.",
-    icon: Wallet,
-  },
-];
+const featureIcons = [Gauge, Route, ShieldCheck, Wallet] as const;
+
+const features = featureCopy.map((feature, index) => ({
+  ...feature,
+  icon: featureIcons[index] ?? Wallet,
+}));
 
 export function Features() {
   return (
@@ -41,9 +20,9 @@ export function Features() {
       <Container>
         <Reveal>
           <SectionHeading
-            eyebrow="Platform"
-            title="Spend rails built for autonomous runs"
-            description="One control plane for CLI agents, HTTP tools, and future registry integrations — same guardrails everywhere."
+            eyebrow={featuresSection.eyebrow}
+            title={featuresSection.title}
+            description={featuresSection.description}
           />
         </Reveal>
 
@@ -52,7 +31,9 @@ export function Features() {
             <Reveal
               key={feature.title}
               delay={0.05 * index}
-              className={cn(feature.featured && "sm:col-span-2 lg:col-span-1 lg:row-span-2")}
+              className={cn(
+                "featured" in feature && feature.featured && "sm:col-span-2 lg:col-span-1 lg:row-span-2",
+              )}
             >
               <FeatureCard {...feature} />
             </Reveal>

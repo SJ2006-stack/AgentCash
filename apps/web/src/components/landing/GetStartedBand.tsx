@@ -2,35 +2,8 @@ import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { GradientText } from "@/components/ui/GradientText";
+import { getStarted, URLS } from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
-
-const tiers: {
-  name: string;
-  price: string;
-  detail: string;
-  features: string[];
-  highlight?: boolean;
-}[] = [
-  {
-    name: "Developer",
-    price: "Free",
-    detail: "Local wallet + CLI during beta",
-    features: ["Testnet wallets", "Budget caps", "Receipt export"],
-  },
-  {
-    name: "Team",
-    price: "Soon",
-    detail: "Shared policies & approvals",
-    features: ["Task Router", "Slack approvals", "Spend dashboards"],
-    highlight: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Talk to us",
-    detail: "Custom settlement & compliance",
-    features: ["Dedicated facilitator", "SSO & audit logs", "Custom merchant rules"],
-  },
-];
 
 export function GetStartedBand() {
   return (
@@ -39,25 +12,26 @@ export function GetStartedBand() {
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="ac-h2 text-foreground">
-              Start with <GradientText>cents</GradientText>, scale to production
+              {getStarted.titleLead} <GradientText>{getStarted.titleAccent}</GradientText>
+              {getStarted.titleTail}
             </h2>
             <p className="mt-4 text-[length:var(--ac-text-body-lg)] leading-[var(--ac-text-body-lg-lh)] text-muted-foreground">
-              Join the beta — ship agent payments without rewriting your stack.
+              {getStarted.description}
             </p>
           </div>
         </Reveal>
 
         <ul className="mt-14 grid gap-4 md:grid-cols-3">
-          {tiers.map((tier, index) => (
+          {getStarted.tiers.map((tier, index) => (
             <Reveal key={tier.name} delay={0.05 * index}>
               <li
                 className={
-                  tier.highlight
+                  "highlight" in tier && tier.highlight
                     ? "ac-card relative border-emerald-400/25 bg-emerald-400/[0.04] p-6"
                     : "ac-card p-6"
                 }
               >
-                {tier.highlight ? (
+                {"highlight" in tier && tier.highlight ? (
                   <span className="absolute -top-3 left-6 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-200">
                     Popular
                   </span>
@@ -81,11 +55,11 @@ export function GetStartedBand() {
           <Button
             size="lg"
             className="gap-2 bg-gradient-to-br from-emerald-300 via-emerald-400 to-teal-500 px-8 text-emerald-950 shadow-[var(--ac-shadow-glow)]"
-            render={<a href="mailto:hello@agentcash.tech" />}
+            render={<a href={URLS.waitlist} />}
             nativeButton={false}
           >
             <Sparkles className="size-4" aria-hidden />
-            Request beta access
+            {getStarted.cta}
           </Button>
         </Reveal>
       </Container>

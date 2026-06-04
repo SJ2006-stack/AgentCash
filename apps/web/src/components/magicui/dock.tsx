@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, type PropsWithChildren, useContext, useRef } from "react";
+import React, { createContext, useContext, useRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   motion,
@@ -31,7 +31,7 @@ const DEFAULT_DISABLEMAGNIFICATION = false;
 const DockMouseXContext = createContext<MotionValue<number> | null>(null);
 
 const dockVariants = cva(
-  "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-2xl border border-emerald-400/20 bg-[rgba(12,17,24,0.72)] p-2 shadow-[0_0_40px_-8px_rgba(52,211,153,0.2)] backdrop-blur-md supports-backdrop-blur:bg-[rgba(12,17,24,0.55)]",
+  "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-2xl border border-[color:var(--ac-border)] bg-[var(--ac-surface-glass)] p-2 shadow-[var(--ac-shadow-glow)] backdrop-blur-md supports-backdrop-blur:bg-[color-mix(in_srgb,var(--ac-surface-glass)_75%,transparent)]",
 );
 
 const Dock = React.forwardRef<HTMLDivElement, DockProps>(
@@ -70,7 +70,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       <DockMouseXContext.Provider value={mouseX}>
         <motion.div
           ref={ref}
-          onMouseMove={(e) => mouseX.set(e.pageX)}
+          onMouseMove={(e) => mouseX.set(e.clientX)}
           onMouseLeave={() => mouseX.set(Infinity)}
           {...props}
           className={cn(dockVariants({ className }), {
@@ -97,7 +97,6 @@ export interface DockIconProps
   mouseX?: MotionValue<number>;
   className?: string;
   children?: React.ReactNode;
-  props?: PropsWithChildren;
 }
 
 const DockIcon = ({

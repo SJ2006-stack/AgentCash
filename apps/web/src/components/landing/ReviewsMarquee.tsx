@@ -3,62 +3,12 @@
 import Image from "next/image";
 
 import { Marquee } from "@/components/magicui/marquee";
+import { reviews, reviewsSection } from "@/content/landing";
 import { usePrefersReducedMotion } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-const REVIEWS = [
-  {
-    name: "Maya Chen",
-    username: "mayac",
-    body: "Our agents settle x402 merchants in USDC—no more pre-funding a dozen API dashboards.",
-    role: "Founder, Lattice Agents",
-  },
-  {
-    name: "Jordan Okonkwo",
-    username: "jokonkwo",
-    body: "agentcash quote + run turned our registry into one budgeted workflow the team actually trusts.",
-    role: "Staff engineer, Orbit Ops",
-  },
-  {
-    name: "Sam Rivera",
-    username: "samr",
-    body: "BYOK wallet at ~/.agentcash means we own keys and Base settlement without a hosted custodian.",
-    role: "Infra lead, Synthwave AI",
-  },
-  {
-    name: "Priya Nair",
-    username: "priyan",
-    body: "Sub-cent micro-payments per tool call—our bot fleet stopped hoarding giant prepaid credits.",
-    role: "CTO, Parcelmind",
-  },
-  {
-    name: "Alex Kim",
-    username: "alexk",
-    body: "Task router v0 paid each registry slug sequentially; receipts on disk are our audit trail.",
-    role: "Platform, Driftstack",
-  },
-  {
-    name: "Taylor Brooks",
-    username: "tbrooks",
-    body: "CLI doctor on testnet caught our facilitator config before we burned mainnet USDC.",
-    role: "DevRel, Northline",
-  },
-  {
-    name: "Riley Santos",
-    username: "rileys",
-    body: "Curated registry.yaml keeps planners on slugs we allow—no surprise paid endpoints in prod.",
-    role: "Security, Helix Foundry",
-  },
-  {
-    name: "Morgan Lee",
-    username: "morganl",
-    body: "Coinbase x402 facilitator plus USDC on Base—agents settle while we sleep.",
-    role: "CEO, Autonode Labs",
-  },
-] as const;
-
-const FIRST_ROW = REVIEWS.slice(0, 4);
-const SECOND_ROW = REVIEWS.slice(4, 8);
+const FIRST_ROW = reviews.slice(0, 4);
+const SECOND_ROW = reviews.slice(4, 8);
 
 function ReviewCard({
   name,
@@ -66,7 +16,7 @@ function ReviewCard({
   body,
   role,
   reduceMotion,
-}: (typeof REVIEWS)[number] & { reduceMotion: boolean }) {
+}: (typeof reviews)[number] & { reduceMotion: boolean }) {
   return (
     <figure
       className={cn(
@@ -102,13 +52,8 @@ export function ReviewsMarquee() {
 
   return (
     <div className="mt-12 w-full max-w-5xl sm:mt-14">
-      <p className="ac-eyebrow mb-4 text-center text-emerald-400/80">
-        Builders shipping with AgentCash
-      </p>
-      <div
-        className="relative w-full overflow-hidden"
-        aria-label="What builders are saying about AgentCash"
-      >
+      <p className="ac-eyebrow mb-4 text-center text-emerald-400/80">{reviewsSection.eyebrow}</p>
+      <div className="relative w-full overflow-hidden" aria-label={reviewsSection.ariaLabel}>
         <div
           className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[18%] bg-gradient-to-r from-[var(--ac-bg)] from-25% via-[var(--ac-bg)]/70 via-55% to-transparent sm:w-1/4"
           aria-hidden

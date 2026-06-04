@@ -5,33 +5,15 @@ import type { LucideIcon } from "lucide-react";
 import { CreditCard, Play, Search } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { howItWorks } from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
 
-const steps: {
-  step: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    step: "01",
-    title: "Connect wallet",
-    description: "Create a local BYOK wallet on Base, fund USDC, and verify with doctor.",
-    icon: CreditCard,
-  },
-  {
-    step: "02",
-    title: "Discover services",
-    description: "Browse the curated x402 registry — search, data, weather, and more by capability.",
-    icon: Search,
-  },
-  {
-    step: "03",
-    title: "Pay & execute",
-    description: "Quote or run a task under budget; each subtask pays via x402 and logs a receipt.",
-    icon: Play,
-  },
-];
+const stepIcons = [CreditCard, Search, Play] as const;
+
+const steps = howItWorks.steps.map((step, index) => ({
+  ...step,
+  icon: stepIcons[index] ?? Play,
+}));
 
 export function HowItWorks() {
   const reduce = useReducedMotion();
@@ -41,9 +23,9 @@ export function HowItWorks() {
       <Container>
         <Reveal>
           <SectionHeading
-            eyebrow="How it works"
-            title="From wallet to paid API in three steps"
-            description="No custodial hop. Deposit USDC to your agent address, pick services from the registry, and let the task router settle each call."
+            eyebrow={howItWorks.eyebrow}
+            title={howItWorks.title}
+            description={howItWorks.description}
             align="center"
             className="mx-auto max-w-2xl"
           />

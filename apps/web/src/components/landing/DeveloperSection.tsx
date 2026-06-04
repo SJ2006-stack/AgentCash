@@ -7,68 +7,21 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import {
+  cliTabContent,
+  cliTabs,
+  developersSection,
+  URLS,
+  type CliTabId,
+} from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
 import { cn } from "@/lib/utils";
 
-const DOCS_URL = "https://docs.agentcash.tech";
-
-type TabId = "wallet" | "pay" | "quote" | "run";
-
-const tabs: { id: TabId; label: string }[] = [
-  { id: "wallet", label: "wallet" },
-  { id: "pay", label: "pay" },
-  { id: "quote", label: "quote" },
-  { id: "run", label: "run" },
-];
-
-const tabContent: Record<
-  TabId,
-  { command: string; lines: { kind: "cmd" | "out" | "ok"; text: string }[] }
-> = {
-  wallet: {
-    command: "npx agentcash wallet create --agree-tos",
-    lines: [
-      { kind: "cmd", text: "$ npx agentcash wallet create --agree-tos" },
-      { kind: "out", text: "→ Created ~/.agentcash/wallet.key (chmod 600)" },
-      { kind: "out", text: "→ Address: 0x7a3…f2c · Base mainnet" },
-      { kind: "ok", text: "✓ Run wallet info to see balances and deposit address" },
-    ],
-  },
-  pay: {
-    command:
-      "npx agentcash pay --url https://weather.hugen.tokyo/weather/current --agree-tos",
-    lines: [
-      {
-        kind: "cmd",
-        text: "$ npx agentcash pay --url https://weather.hugen.tokyo/weather/current --agree-tos",
-      },
-      { kind: "out", text: "→ x402: payment intent · ~$0.01 USDC" },
-      { kind: "out", text: "→ Settlement via Coinbase facilitator (Base)" },
-      { kind: "ok", text: "✓ 200 OK · receipt ac_weather_01…" },
-    ],
-  },
-  quote: {
-    command: 'npx agentcash quote "research SOL price" --budget 0.20',
-    lines: [
-      { kind: "cmd", text: '$ npx agentcash quote "research SOL price" --budget 0.20' },
-      { kind: "out", text: "→ Planner: registry heuristic (no spend)" },
-      { kind: "out", text: "→ Subtasks: brave-search-v1 · projected $0.12 USDC" },
-      { kind: "ok", text: "✓ Under budget · dry-run only" },
-    ],
-  },
-  run: {
-    command: 'npx agentcash run "get weather in Tokyo" --budget 0.50',
-    lines: [
-      { kind: "cmd", text: '$ npx agentcash run "get weather in Tokyo" --budget 0.50' },
-      { kind: "out", text: "→ Subtask 1/1: weatherapi-v1 · Referer: agentcash/v0" },
-      { kind: "out", text: "→ x402 paid fetch · spent $0.01 USDC" },
-      { kind: "ok", text: "✓ Run complete · total $0.01 · receipt ac_run_9k2…" },
-    ],
-  },
-};
+const tabs = cliTabs;
+const tabContent = cliTabContent;
 
 export function DeveloperSection() {
-  const [active, setActive] = useState<TabId>("wallet");
+  const [active, setActive] = useState<CliTabId>("wallet");
   const [visible, setVisible] = useState(0);
   const [copied, setCopied] = useState(false);
   const reduce = useReducedMotion();
@@ -101,9 +54,9 @@ export function DeveloperSection() {
           <div>
             <Reveal>
               <SectionHeading
-                eyebrow="Developers"
-                title="Ship with the agentcash CLI"
-                description="Wallet, pay, quote, and run — same binary as @agentcash/x402-client and @agentcash/task-router."
+                eyebrow={developersSection.eyebrow}
+                title={developersSection.title}
+                description={developersSection.description}
               />
             </Reveal>
 
@@ -134,7 +87,7 @@ export function DeveloperSection() {
                 render={<a href="#get-started" />}
                 nativeButton={false}
               >
-                Get the CLI
+                {developersSection.primaryCta}
                 <ArrowRight className="size-4" aria-hidden />
               </Button>
               <Button
@@ -142,11 +95,11 @@ export function DeveloperSection() {
                 size="lg"
                 className="gap-2 border-white/12 bg-white/[0.02] text-foreground"
                 render={
-                  <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" />
+                  <a href={URLS.docs} target="_blank" rel="noopener noreferrer" />
                 }
                 nativeButton={false}
               >
-                Read the docs
+                {developersSection.secondaryCta}
                 <ExternalLink className="size-3.5" aria-hidden />
               </Button>
             </Reveal>
@@ -159,7 +112,7 @@ export function DeveloperSection() {
                 className="mb-4 gap-2 font-mono normal-case tracking-normal text-muted-foreground"
               >
                 <Terminal className="size-3.5 text-emerald-400/90" aria-hidden />
-                CLI preview
+                {developersSection.terminalLabel}
               </Eyebrow>
 
               <div className="ac-terminal overflow-hidden rounded-xl border border-white/10 shadow-[var(--ac-shadow-terminal)]">

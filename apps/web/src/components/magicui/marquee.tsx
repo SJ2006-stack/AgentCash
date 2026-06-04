@@ -1,12 +1,14 @@
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
 
-interface MarqueeProps extends React.ComponentPropsWithoutRef<"div"> {
+interface MarqueeProps extends ComponentPropsWithoutRef<"div"> {
   className?: string;
   reverse?: boolean;
   pauseOnHover?: boolean;
   vertical?: boolean;
   repeat?: number;
-  children?: React.ReactNode;
+  children: ReactNode;
 }
 
 export function Marquee({
@@ -22,7 +24,7 @@ export function Marquee({
     <div
       {...props}
       className={cn(
-        "group flex w-full overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
+        "group flex w-full gap-(--gap) overflow-hidden p-2 [--duration:40s] [--gap:1rem]",
         {
           "flex-row": !vertical,
           "flex-col": vertical,
@@ -34,7 +36,7 @@ export function Marquee({
         <div
           key={i}
           className={cn(
-            "flex shrink-0 justify-around [gap:var(--gap)] will-change-transform",
+            "flex shrink-0 justify-around gap-(--gap) will-change-transform",
             {
               "animate-marquee flex-row flex-nowrap": !vertical,
               "animate-marquee-vertical flex-col flex-nowrap": vertical,

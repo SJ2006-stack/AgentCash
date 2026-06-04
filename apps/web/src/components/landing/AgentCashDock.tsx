@@ -14,31 +14,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { dock } from "@/content/landing";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
-  {
-    href: "https://docs.agentcash.tech",
-    label: "Docs",
-    icon: BookOpenIcon,
-    external: true,
-  },
-] as const;
+const NAV_ITEMS = dock.nav.map((item) => ({
+  ...item,
+  icon: BookOpenIcon,
+}));
 
-const SOCIAL_ITEMS = [
-  {
-    name: "Waitlist",
-    href: "mailto:hello@agentcash.tech?subject=AgentCash%20early%20access",
-    icon: MailIcon,
-    external: true,
-  },
-  {
-    name: "Status",
-    href: "https://status.agentcash.tech",
-    icon: Activity,
-    external: true,
-  },
-] as const;
+const SOCIAL_ITEMS = dock.social.map((item) => ({
+  ...item,
+  icon: item.name === "Waitlist" ? MailIcon : Activity,
+}));
 
 const iconButtonClass = cn(
   buttonVariants({ variant: "ghost", size: "icon" }),
