@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/magicui/scroll-progress";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
@@ -45,9 +46,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="min-h-screen antialiased"
         style={{ fontFamily: "var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif" }}
       >
-        <SiteHeader />
-        <ScrollProgress className="top-14 sm:top-16" />
-        {children}
+        <MotionProvider>
+          <SiteHeader />
+          <ScrollProgress className="top-14 sm:top-16" />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );

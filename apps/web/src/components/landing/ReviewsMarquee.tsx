@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { Marquee } from "@/components/magicui/marquee";
 import { reviews, reviewsSection } from "@/content/landing";
-import { usePrefersReducedMotion } from "@/lib/motion";
+import { useMotionEnabled, useMotionReady } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const FIRST_ROW = reviews.slice(0, 4);
@@ -15,14 +15,14 @@ function ReviewCard({
   username,
   body,
   role,
-  reduceMotion,
-}: (typeof reviews)[number] & { reduceMotion: boolean }) {
+  motionOn,
+}: (typeof reviews)[number] & { motionOn: boolean }) {
   return (
     <figure
       className={cn(
         "ac-card relative w-64 shrink-0 cursor-default border-[var(--ac-surface-glass-border)] bg-[var(--ac-surface-glass)] p-4 sm:w-72",
         "ring-1 ring-emerald-400/10 transition-[transform,box-shadow,ring-color] duration-200",
-        !reduceMotion &&
+        motionOn &&
           "hover:-translate-y-0.5 hover:ring-emerald-400/30 hover:shadow-[0_12px_32px_-16px_rgba(52,211,153,0.35)]",
       )}
     >
@@ -48,7 +48,8 @@ function ReviewCard({
 }
 
 export function ReviewsMarquee() {
-  const reduceMotion = usePrefersReducedMotion();
+  const ready = useMotionReady();
+  const motionOn = useMotionEnabled();
 
   return (
     <div className="mt-12 w-full max-w-5xl sm:mt-14">
@@ -63,15 +64,22 @@ export function ReviewsMarquee() {
           aria-hidden
         />
 
-        <div className="flex w-full flex-col gap-3 [--gap:1rem] sm:gap-4">
+        <div
+          data-motion={ready && motionOn ? "on" : "off"}
+          className={cn(
+            "flex w-full flex-col gap-3 [--gap:1rem] sm:gap-4",
+            "[&_.animate-marquee]:![animation-play-state:paused]",
+            "data-[motion=on]:[&_.animate-marquee]:![animation-play-state:running]",
+          )}
+        >
           <Marquee pauseOnHover repeat={2} className="[--duration:42s] [--gap:1rem]">
             {FIRST_ROW.map((review) => (
-              <ReviewCard key={review.username} reduceMotion={reduceMotion} {...review} />
+              <ReviewCard key={review.username} motionOn={motionOn} {...review} />
             ))}
           </Marquee>
           <Marquee reverse pauseOnHover repeat={2} className="[--duration:48s] [--gap:1rem]">
             {SECOND_ROW.map((review) => (
-              <ReviewCard key={`${review.username}-row2`} reduceMotion={reduceMotion} {...review} />
+              <ReviewCard key={`${review.username}-row2`} motionOn={motionOn} {...review} />
             ))}
           </Marquee>
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { DockReveal } from "@/components/landing/DockReveal";
 import { ComingSoonHero } from "@/components/landing/ComingSoonHero";
 import { MarqueeReveal } from "@/components/landing/MarqueeReveal";

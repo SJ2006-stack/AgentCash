@@ -107,13 +107,12 @@ function ColorRevealUnit({
   return (
     <motion.span
       className="inline-block"
-      initial={{ opacity: 0, color: appearColor }}
+      initial={{ opacity: 1, color: appearColor }}
       animate={{ opacity: 1, color: finalColor }}
       transition={{
-        opacity: { duration: 0, delay: baseDelay },
         color: { duration: 0, delay: settleAt },
       }}
-      style={{ color: finalColor }}
+      style={{ color: appearColor }}
     >
       {display}
     </motion.span>

@@ -1,12 +1,14 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef, type CSSProperties } from "react";
 import type { LucideIcon } from "lucide-react";
 import { CreditCard, Play, Search } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { howItWorks } from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
+import { motionViewport, useMotionReady, usePrefersReducedMotion, useRevealInView } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 const stepIcons = [CreditCard, Search, Play] as const;
 
@@ -16,7 +18,9 @@ const steps = howItWorks.steps.map((step, index) => ({
 }));
 
 export function HowItWorks() {
-  const reduce = useReducedMotion();
+  const ready = useMotionReady();
+  const reduce = usePrefersReducedMotion();
+  const motionOn = ready && !reduce;
 
   return (
     <Section id="how-it-works" className="scroll-mt-24 border-t border-[color:var(--ac-border)]">
@@ -32,29 +36,38 @@ export function HowItWorks() {
         </Reveal>
 
         <div className="relative mt-16">
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute top-10 right-[12%] left-[12%] hidden h-px origin-left bg-gradient-to-r from-emerald-400/15 via-emerald-400/45 to-emerald-400/15 md:block"
-            initial={reduce ? false : { scaleX: 0 }}
-            whileInView={reduce ? undefined : { scaleX: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          />
+          {motionOn ? <HowItWorksLine /> : (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-10 right-[12%] left-[12%] hidden h-px origin-left bg-gradient-to-r from-emerald-400/15 via-emerald-400/45 to-emerald-400/15 md:block"
+            />
+          )}
 
           <ol className="grid gap-10 md:grid-cols-3 md:gap-6">
             {steps.map((item, index) => (
-              <StepCard
-                key={item.step}
-                {...item}
-                index={index}
-                showConnector={index < steps.length - 1}
-                reduce={!!reduce}
-              />
+              <StepCard key={item.step} {...item} index={index} motionOn={motionOn} />
             ))}
           </ol>
         </div>
       </Container>
     </Section>
+  );
+}
+
+function HowItWorksLine() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useRevealInView(ref, motionViewport);
+
+  return (
+    <div
+      ref={ref}
+      aria-hidden
+      className={cn(
+        "pointer-events-none absolute top-10 right-[12%] left-[12%] hidden h-px origin-left bg-gradient-to-r from-emerald-400/15 via-emerald-400/45 to-emerald-400/15 md:block",
+        inView && "ac-animate-scale-x-in",
+      )}
+      style={inView ? ({ animationDelay: "0.15s" } as CSSProperties) : undefined}
+    />
   );
 }
 
@@ -64,34 +77,37 @@ function StepCard({
   description,
   icon: Icon,
   index,
-  showConnector,
-  reduce,
+  motionOn,
 }: {
   step: string;
   title: string;
   description: string;
   icon: LucideIcon;
   index: number;
-  showConnector: boolean;
-  reduce: boolean;
+  motionOn: boolean;
 }) {
+  const ref = useRef<HTMLLIElement>(null);
+  const inView = useRevealInView(ref, motionViewport, motionOn);
+  const showConnector = index < steps.length - 1;
+  const animate = motionOn && inView;
+
+  const cardClass =
+    "relative flex flex-col items-center text-center md:items-start md:text-left";
+
   return (
-    <motion.li
-      className="relative flex flex-col items-center text-center md:items-start md:text-left"
-      initial={reduce ? false : { opacity: 0, y: 18 }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: 0.07 * index, ease: [0.22, 1, 0.36, 1] }}
+    <li
+      ref={ref}
+      className={cn(cardClass, animate && "ac-animate-slide-up-lg")}
+      style={animate ? ({ animationDelay: `${0.07 * index}s` } as CSSProperties) : undefined}
     >
       {showConnector ? (
-        <motion.div
+        <div
           aria-hidden
-          className="absolute top-14 left-1/2 h-[calc(100%+2.5rem)] w-px -translate-x-1/2 bg-gradient-to-b from-emerald-400/35 to-transparent md:hidden"
-          initial={reduce ? false : { scaleY: 0 }}
-          whileInView={reduce ? undefined : { scaleY: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.12 }}
-          style={{ originY: 0 }}
+          className={cn(
+            "absolute top-14 left-1/2 h-[calc(100%+2.5rem)] w-px -translate-x-1/2 origin-top bg-gradient-to-b from-emerald-400/35 to-transparent md:hidden",
+            animate && "ac-animate-scale-y-in",
+          )}
+          style={animate ? ({ animationDelay: `${0.12 + index * 0.05}s` } as CSSProperties) : undefined}
         />
       ) : null}
 
@@ -103,6 +119,6 @@ function StepCard({
       </div>
       <h3 className="ac-h3 text-foreground">{title}</h3>
       <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">{description}</p>
-    </motion.li>
+    </li>
   );
 }

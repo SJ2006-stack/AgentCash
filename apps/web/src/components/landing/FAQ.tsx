@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/landing/Reveal";
-import { easeOut, motionDurations } from "@/lib/motion";
+import { easeOut, motionDurations, useMotionEnabled, useMotionReady, usePrefersReducedMotion } from "@/lib/motion";
 import { faqSection, faqs } from "@/content/landing";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +43,14 @@ export function FAQ() {
   );
 }
 
+function FaqAnswerBody({ answer }: { answer: string }) {
+  return (
+    <p className="border-t border-[color:var(--ac-border)] px-6 pt-3 pb-5 text-sm leading-relaxed text-muted-foreground">
+      {answer}
+    </p>
+  );
+}
+
 function FaqItem({
   question,
   answer,
@@ -54,7 +62,9 @@ function FaqItem({
   open: boolean;
   onToggle: () => void;
 }) {
-  const reduce = useReducedMotion();
+  const ready = useMotionReady();
+  const motionOn = useMotionEnabled();
+  const reduce = usePrefersReducedMotion();
 
   return (
     <li className="overflow-hidden rounded-xl border border-[color:var(--ac-border)] bg-[color:var(--ac-surface-glass)] backdrop-blur-sm">
@@ -76,17 +86,21 @@ function FaqItem({
       <AnimatePresence initial={false}>
         {open ? (
           <motion.div
-            initial={reduce ? false : { height: 0, opacity: 0 }}
-            animate={reduce ? undefined : { height: "auto", opacity: 1 }}
-            exit={reduce ? undefined : { height: 0, opacity: 0 }}
+            key="panel"
+            initial={ready && motionOn && !reduce ? { height: 0, opacity: 0 } : false}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={ready && motionOn && !reduce ? { height: 0, opacity: 0 } : undefined}
             transition={
-              reduce ? { duration: 0 } : { duration: motionDurations.normal, ease: easeOut }
+              reduce || !motionOn || !ready
+                ? { duration: 0 }
+                : {
+                    height: { duration: motionDurations.normal, ease: easeOut },
+                    opacity: { duration: motionDurations.fast, ease: easeOut },
+                  }
             }
             className="overflow-hidden"
           >
-            <p className="border-t border-[color:var(--ac-border)] px-6 pt-3 pb-5 text-sm leading-relaxed text-muted-foreground">
-              {answer}
-            </p>
+            <FaqAnswerBody answer={answer} />
           </motion.div>
         ) : null}
       </AnimatePresence>

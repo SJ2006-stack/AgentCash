@@ -1,25 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 import { ReviewsMarquee } from "@/components/landing/ReviewsMarquee";
-import { easeOut, motionDurations, usePrefersReducedMotion } from "@/lib/motion";
+import { useMotionReady, usePrefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 export function MarqueeReveal() {
-  const reduceMotion = usePrefersReducedMotion();
-
-  if (reduceMotion) {
-    return <ReviewsMarquee />;
-  }
+  const ready = useMotionReady();
+  const reduce = usePrefersReducedMotion();
+  const animate = ready && !reduce;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: motionDurations.slow, ease: easeOut }}
-    >
+    <div className={cn(animate && "ac-animate-slide-up")} style={animate ? { animationDelay: "0.38s" } : undefined}>
       <ReviewsMarquee />
-    </motion.div>
+    </div>
   );
 }

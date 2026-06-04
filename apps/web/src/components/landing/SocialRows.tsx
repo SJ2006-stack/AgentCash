@@ -1,7 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/landing/Reveal";
-import { cn } from "@/lib/utils";
 
 const worksWith = [
   { name: "x402", sub: "HTTP 402 payments" },

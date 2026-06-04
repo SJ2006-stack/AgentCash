@@ -8,7 +8,9 @@ import { GetStartedBand } from "@/components/landing/GetStartedBand";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { LogoStrip } from "@/components/landing/LogoStrip";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
+import { Roadmap } from "@/components/landing/Roadmap";
 import { SiteFooter } from "@/components/landing/SiteFooter";
+import { SocialRows } from "@/components/landing/SocialRows";
 
 export default function Home() {
   return (
@@ -16,11 +18,13 @@ export default function Home() {
       <main>
         <ComingSoon />
         <LogoStrip />
+        <SocialRows />
         <ProblemSolution />
         <Features />
         <HowItWorks />
         <DocsPreview />
         <DeveloperSection />
+        <Roadmap />
         <GetStartedBand />
         <FAQ />
         <FinalCTA />

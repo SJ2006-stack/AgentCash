@@ -36,7 +36,7 @@ export function Marquee({
         <div
           key={i}
           className={cn(
-            "flex shrink-0 justify-around gap-(--gap) will-change-transform",
+            "flex shrink-0 justify-around gap-(--gap) will-change-transform [--duration:inherit] [--gap:inherit]",
             {
               "animate-marquee flex-row flex-nowrap": !vertical,
               "animate-marquee-vertical flex-col flex-nowrap": vertical,

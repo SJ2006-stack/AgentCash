@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, Check, Copy, ExternalLink, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -15,6 +15,7 @@ import {
   type CliTabId,
 } from "@/content/landing";
 import { Reveal } from "@/components/landing/Reveal";
+import { easeOut, motionDurations, useMotionEnabled, useMotionReady } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const tabs = cliTabs;
@@ -24,7 +25,8 @@ export function DeveloperSection() {
   const [active, setActive] = useState<CliTabId>("wallet");
   const [visible, setVisible] = useState(0);
   const [copied, setCopied] = useState(false);
-  const reduce = useReducedMotion();
+  const ready = useMotionReady();
+  const motionOn = useMotionEnabled();
   const content = tabContent[active];
 
   useEffect(() => {
@@ -150,21 +152,34 @@ export function DeveloperSection() {
                 </div>
 
                 <div className="space-y-2 px-4 py-5 font-mono text-[length:var(--ac-text-mono)] leading-[var(--ac-text-mono-lh)] sm:px-6">
-                  {content.lines.slice(0, visible).map((line, i) => (
-                    <motion.p
-                      key={`${active}-${i}`}
-                      initial={reduce ? false : { opacity: 0, x: -6 }}
-                      animate={reduce ? undefined : { opacity: 1, x: 0 }}
-                      transition={{ duration: 0.22 }}
-                      className={cn(
-                        line.kind === "cmd" && "text-emerald-300",
-                        line.kind === "out" && "text-muted-foreground",
-                        line.kind === "ok" && "text-teal-300",
-                      )}
-                    >
-                      {line.text}
-                    </motion.p>
-                  ))}
+                  {content.lines.slice(0, visible).map((line, i) =>
+                    motionOn && ready ? (
+                      <motion.p
+                        key={`${active}-${i}`}
+                        initial={{ opacity: 0, x: -10, y: 4 }}
+                        animate={{ opacity: 1, x: 0, y: 0 }}
+                        transition={{ duration: motionDurations.fast, ease: easeOut }}
+                        className={cn(
+                          line.kind === "cmd" && "text-emerald-300",
+                          line.kind === "out" && "text-muted-foreground",
+                          line.kind === "ok" && "text-teal-300",
+                        )}
+                      >
+                        {line.text}
+                      </motion.p>
+                    ) : (
+                      <p
+                        key={`${active}-${i}`}
+                        className={cn(
+                          line.kind === "cmd" && "text-emerald-300",
+                          line.kind === "out" && "text-muted-foreground",
+                          line.kind === "ok" && "text-teal-300",
+                        )}
+                      >
+                        {line.text}
+                      </p>
+                    ),
+                  )}
                   {visible < content.lines.length ? (
                     <span
                       className="inline-block h-4 w-2 animate-pulse bg-emerald-400/80"

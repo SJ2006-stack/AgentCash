@@ -8,6 +8,8 @@ initOpenNextCloudflareForDev();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  // Framer Motion entrance animations can cancel on Strict Mode's dev double-mount.
+  reactStrictMode: false,
   outputFileTracingRoot: path.join(__dirname, "../.."),
   images: {
     remotePatterns: [

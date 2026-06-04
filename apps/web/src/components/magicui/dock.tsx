@@ -28,10 +28,18 @@ const DEFAULT_MAGNIFICATION = 60;
 const DEFAULT_DISTANCE = 140;
 const DEFAULT_DISABLEMAGNIFICATION = false;
 
+type DockConfigValue = {
+  iconSize: number;
+  iconMagnification: number;
+  disableMagnification: boolean;
+  iconDistance: number;
+};
+
 const DockMouseXContext = createContext<MotionValue<number> | null>(null);
+const DockConfigContext = createContext<DockConfigValue | null>(null);
 
 const dockVariants = cva(
-  "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-2xl border border-[color:var(--ac-border)] bg-[var(--ac-surface-glass)] p-2 shadow-[var(--ac-shadow-glow)] backdrop-blur-md supports-backdrop-blur:bg-[color-mix(in_srgb,var(--ac-surface-glass)_75%,transparent)]",
+  "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-2xl border border-[color:var(--ac-border)] bg-[var(--ac-surface-glass)] p-2 shadow-[var(--ac-shadow-glow)] backdrop-blur-md transition-shadow duration-300 hover:shadow-[var(--ac-shadow-glow-strong)] supports-backdrop-blur:bg-[color-mix(in_srgb,var(--ac-surface-glass)_75%,transparent)]",
 );
 
 const Dock = React.forwardRef<HTMLDivElement, DockProps>(
@@ -49,6 +57,12 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
     ref,
   ) => {
     const mouseX = useMotionValue(Infinity);
+    const dockConfig: DockConfigValue = {
+      iconSize,
+      iconMagnification,
+      disableMagnification,
+      iconDistance,
+    };
 
     const renderChildren = () => {
       return React.Children.map(children, (child) => {
@@ -67,21 +81,23 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
     };
 
     return (
-      <DockMouseXContext.Provider value={mouseX}>
-        <motion.div
-          ref={ref}
-          onMouseMove={(e) => mouseX.set(e.clientX)}
-          onMouseLeave={() => mouseX.set(Infinity)}
-          {...props}
-          className={cn(dockVariants({ className }), {
-            "items-start": direction === "top",
-            "items-center": direction === "middle",
-            "items-end": direction === "bottom",
-          })}
-        >
-          {renderChildren()}
-        </motion.div>
-      </DockMouseXContext.Provider>
+      <DockConfigContext.Provider value={dockConfig}>
+        <DockMouseXContext.Provider value={mouseX}>
+          <motion.div
+            ref={ref}
+            onMouseMove={(e) => !disableMagnification && mouseX.set(e.clientX)}
+            onMouseLeave={() => mouseX.set(Infinity)}
+            {...props}
+            className={cn(dockVariants({ className }), {
+              "items-start": direction === "top",
+              "items-center": direction === "middle",
+              "items-end": direction === "bottom",
+            })}
+          >
+            {renderChildren()}
+          </motion.div>
+        </DockMouseXContext.Provider>
+      </DockConfigContext.Provider>
     );
   },
 );
@@ -100,15 +116,22 @@ export interface DockIconProps
 }
 
 const DockIcon = ({
-  size = DEFAULT_SIZE,
-  magnification = DEFAULT_MAGNIFICATION,
-  disableMagnification,
-  distance = DEFAULT_DISTANCE,
+  size: sizeProp,
+  magnification: magnificationProp,
+  disableMagnification: disableMagnificationProp,
+  distance: distanceProp,
   mouseX,
   className,
   children,
   ...props
 }: DockIconProps) => {
+  const dockConfig = useContext(DockConfigContext);
+  const size = sizeProp ?? dockConfig?.iconSize ?? DEFAULT_SIZE;
+  const magnification = magnificationProp ?? dockConfig?.iconMagnification ?? DEFAULT_MAGNIFICATION;
+  const disableMagnification =
+    disableMagnificationProp ?? dockConfig?.disableMagnification ?? DEFAULT_DISABLEMAGNIFICATION;
+  const distance = distanceProp ?? dockConfig?.iconDistance ?? DEFAULT_DISTANCE;
+
   const ref = useRef<HTMLDivElement>(null);
   const padding = Math.max(6, size * 0.2);
   const defaultMouseX = useMotionValue(Infinity);

@@ -173,8 +173,84 @@ code {
   animation: ac-marquee 40s linear infinite;
 }
 
+/* Entrance motion — CSS keyframes (reliable with Tailwind + Framer coexistence) */
+@keyframes ac-slide-up {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ac-slide-up-lg {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ac-scale-x-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ac-scale-y-in {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes ac-pop-in {
+  from {
+    transform: translateY(8px) scale(0.94);
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ac-animate-slide-up {
+  animation: ac-slide-up var(--ac-motion-reveal, 500ms) var(--ac-ease-out, cubic-bezier(0.22, 1, 0.36, 1))
+    both;
+}
+
+.ac-animate-slide-up-lg {
+  animation: ac-slide-up-lg var(--ac-motion-reveal, 500ms) var(--ac-ease-out, cubic-bezier(0.22, 1, 0.36, 1))
+    both;
+}
+
+.ac-animate-scale-x-in {
+  transform-origin: left center;
+  animation: ac-scale-x-in 850ms var(--ac-ease-out, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+.ac-animate-scale-y-in {
+  transform-origin: top center;
+  animation: ac-scale-y-in 550ms var(--ac-ease-out, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+.ac-animate-pop-in {
+  animation: ac-pop-in var(--ac-motion-normal, 300ms) var(--ac-ease-out, cubic-bezier(0.22, 1, 0.36, 1))
+    both;
+}
+
 /* Scoped overrides only — a global * { animation-duration: 0.01ms } block breaks Magic UI motion. */
 @media (prefers-reduced-motion: reduce) {
+  .ac-animate-slide-up,
+  .ac-animate-slide-up-lg,
+  .ac-animate-scale-x-in,
+  .ac-animate-scale-y-in,
+  .ac-animate-pop-in,
   .ac-marquee-track,
   .animate-marquee,
   .animate-marquee-vertical {

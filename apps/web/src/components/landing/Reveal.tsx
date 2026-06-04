@@ -1,29 +1,33 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import type { ReactNode } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
+import { motionViewport, useMotionReady, usePrefersReducedMotion, useRevealInView } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
-interface RevealProps extends Omit<HTMLMotionProps<"div">, "ref"> {
+interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   delay?: number;
   y?: number;
 }
 
-/** Subtle viewport-triggered reveal. Honors prefers-reduced-motion. */
-export function Reveal({ children, delay = 0, y = 14, className, ...rest }: RevealProps) {
-  const reduce = useReducedMotion();
+/** Scroll-triggered slide-up reveal (CSS keyframes; opacity stays 1). */
+export function Reveal({ children, delay = 0, y = 14, className, style, ...rest }: RevealProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const ready = useMotionReady();
+  const reduce = usePrefersReducedMotion();
+  const enabled = ready && !reduce;
+  const inView = useRevealInView(ref, motionViewport, enabled);
+  const animate = enabled && inView;
+  const motionClass = y > 14 ? "ac-animate-slide-up-lg" : "ac-animate-slide-up";
+
   return (
-    <motion.div
-      initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={
-        reduce ? { duration: 0 } : { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }
-      }
-      className={className}
+    <div
+      ref={ref}
+      className={cn(className, animate && motionClass)}
+      style={animate ? ({ ...style, animationDelay: `${delay}s` } as CSSProperties) : style}
       {...rest}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

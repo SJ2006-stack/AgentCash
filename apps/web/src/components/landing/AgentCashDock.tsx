@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Activity, BookOpenIcon, MailIcon } from "lucide-react";
 
 import { Dock, DockIcon } from "@/components/magicui/dock";
-import { usePrefersReducedMotion } from "@/lib/motion";
+import { useMotionEnabled, useMotionReady } from "@/lib/motion";
 import { buttonVariants } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -70,11 +70,12 @@ function DockLink({
 }
 
 export function AgentCashDock() {
-  const reduceMotion = usePrefersReducedMotion();
+  const ready = useMotionReady();
+  const motionOn = useMotionEnabled();
 
   return (
     <TooltipProvider delay={200}>
-      <Dock direction="middle" disableMagnification={reduceMotion} className="mt-10">
+      <Dock direction="middle" disableMagnification={!ready || !motionOn} className="mt-10">
         {NAV_ITEMS.map((item) => (
           <DockLink key={item.label} {...item} />
         ))}
