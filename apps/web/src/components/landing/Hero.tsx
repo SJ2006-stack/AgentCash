@@ -34,6 +34,21 @@ function HeroReveal({
   );
 }
 
+function SoonPulse({ children }: { children: ReactNode }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.span
+      className="text-emerald-300"
+      animate={reduce ? undefined : { opacity: [1, 0.65, 1] }}
+      transition={
+        reduce ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
+      }
+    >
+      {children}
+    </motion.span>
+  );
+}
+
 export function Hero() {
   const reduce = useReducedMotion();
 
@@ -48,33 +63,40 @@ export function Hero() {
       </div>
 
       <Container className="relative">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 xl:gap-16">
-          <div className="max-w-xl lg:max-w-none">
-            <HeroReveal>
-              <Eyebrow
-                dot
-                className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 font-mono normal-case tracking-wider text-emerald-300"
-              >
-                Now in beta
-              </Eyebrow>
-            </HeroReveal>
+        <HeroReveal className="text-center">
+          <Eyebrow
+            dot
+            className="mx-auto rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 font-mono normal-case tracking-wider text-emerald-300"
+          >
+            AgentCash
+          </Eyebrow>
+          <h1 className="mt-5 text-[clamp(2.75rem,7vw+1rem,4.75rem)] font-bold leading-[0.95] tracking-[0.08em] text-foreground uppercase sm:tracking-[0.12em]">
+            <span className="font-extrabold text-white">COMING</span>{" "}
+            <SoonPulse>
+              <span className="font-black text-emerald-300">SOON</span>
+            </SoonPulse>
+          </h1>
+        </HeroReveal>
 
+        <div className="mt-10 grid items-center gap-12 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 xl:gap-16">
+          <div className="max-w-xl text-center lg:max-w-none lg:text-left">
             <HeroReveal delay={0.06}>
-              <h1 className="ac-display mt-6 max-w-4xl text-foreground">
-                Agents that pay
-                <br />
-                for <GradientText>API access</GradientText>.
-              </h1>
-            </HeroReveal>
-
-            <HeroReveal delay={0.12}>
-              <p className="ac-body-lg mt-5 max-w-lg text-muted-foreground">
-                AgentCash is the wallet and control plane for autonomous spend — x402 USDC settlement,
-                budget caps, and receipts before a cent leaves your key.
+              <p className="ac-h3 mx-auto max-w-xl text-foreground lg:mx-0">
+                Agents that pay for <GradientText>API access</GradientText>
               </p>
             </HeroReveal>
 
-            <HeroReveal delay={0.18} className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <HeroReveal delay={0.12}>
+              <p className="ac-body-lg mx-auto mt-4 max-w-lg text-muted-foreground lg:mx-0">
+                The wallet and control plane for autonomous spend — x402 USDC settlement, budget caps,
+                and receipts before a cent leaves your key.
+              </p>
+            </HeroReveal>
+
+            <HeroReveal
+              delay={0.18}
+              className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:items-start"
+            >
               <Button
                 size="lg"
                 className="h-11 w-full gap-2 bg-gradient-to-br from-emerald-300 via-emerald-400 to-teal-500 px-6 text-emerald-950 shadow-[var(--ac-shadow-glow)] hover:from-emerald-200 hover:via-emerald-300 hover:to-teal-400 sm:w-auto"

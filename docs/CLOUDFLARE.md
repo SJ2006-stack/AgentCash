@@ -78,8 +78,16 @@ npm run deploy:cf
 | Wrangler “workspace root” error | Deploy from **`apps/web`**. |
 | Peer / Next version errors | `apps/web` uses Next `>=15.5.18` for `@opennextjs/cloudflare`. |
 | `Cannot find native binding (@ast-grep/napi)` on Linux CI | `@opennextjs/cloudflare` uses `@ast-grep/napi`. Lockfiles generated on macOS can omit Linux optional bindings ([npm#4828](https://github.com/npm/cli/issues/4828)). `apps/web` pins `@ast-grep/napi-linux-x64-gnu` in `optionalDependencies` so `npm ci` on Cloudflare (linux x64) installs the binding. Commit an updated `package-lock.json` after changing that pin. |
+| `Cannot find module '../lightningcss.linux-x64-gnu.node'` during `next build` / `next/font` | Tailwind v4 (`@tailwindcss/postcss`) pulls in `lightningcss`, which loads a platform-specific optional package. Same macOS lockfile issue as above. Pin `lightningcss-linux-x64-gnu` (version must match resolved `lightningcss` in `package-lock.json`, e.g. `1.32.0`) in `apps/web` `optionalDependencies` and commit the lockfile. |
+| Tailwind / Oxide native binding missing on Linux CI | `@tailwindcss/oxide` uses per-platform optional packages. Pin `@tailwindcss/oxide-linux-x64-gnu` (match `tailwindcss` / `@tailwindcss/oxide` version, e.g. `4.3.0`) alongside the lightningcss pin. |
 
-No extra Cloudflare dashboard env vars are required for this fix.
+No extra Cloudflare dashboard env vars are required for these fixes.
+
+**Linux x64 GNU optional pins** (in `apps/web/package.json` → commit `package-lock.json` after edits):
+
+- `@ast-grep/napi-linux-x64-gnu`
+- `lightningcss-linux-x64-gnu`
+- `@tailwindcss/oxide-linux-x64-gnu`
 
 ## Files
 
