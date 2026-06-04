@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { Marquee } from "@/components/magicui/marquee";
+import { usePrefersReducedMotion } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const REVIEWS = [
@@ -64,15 +65,18 @@ function ReviewCard({
   username,
   body,
   role,
-}: (typeof REVIEWS)[number]) {
+  reduceMotion,
+}: (typeof REVIEWS)[number] & { reduceMotion: boolean }) {
   return (
     <figure
       className={cn(
         "ac-card relative w-64 shrink-0 cursor-default border-[var(--ac-surface-glass-border)] bg-[var(--ac-surface-glass)] p-4 sm:w-72",
-        "ring-1 ring-emerald-400/10 transition-colors hover:ring-emerald-400/25",
+        "ring-1 ring-emerald-400/10 transition-[transform,box-shadow,ring-color] duration-200",
+        !reduceMotion &&
+          "hover:-translate-y-0.5 hover:ring-emerald-400/30 hover:shadow-[0_12px_32px_-16px_rgba(52,211,153,0.35)]",
       )}
     >
-      <blockquote className="text-left text-sm leading-relaxed text-[var(--ac-fg-muted)]">
+      <blockquote className="line-clamp-4 text-left text-sm leading-relaxed text-[var(--ac-fg-muted)]">
         &ldquo;{body}&rdquo;
       </blockquote>
       <figcaption className="mt-4 flex items-center gap-3 border-t border-[var(--ac-border)] pt-4">
@@ -94,31 +98,38 @@ function ReviewCard({
 }
 
 export function ReviewsMarquee() {
-  return (
-    <div
-      className="relative mt-10 w-full max-w-5xl overflow-hidden"
-      aria-label="What builders are saying about AgentCash"
-    >
-      <div
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-1/5 bg-gradient-to-r from-[var(--ac-bg)] via-[var(--ac-bg)]/80 to-transparent sm:w-1/4"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-1/5 bg-gradient-to-l from-[var(--ac-bg)] via-[var(--ac-bg)]/80 to-transparent sm:w-1/4"
-        aria-hidden
-      />
+  const reduceMotion = usePrefersReducedMotion();
 
-      <div className="flex flex-col gap-3 [--gap:1rem] sm:gap-4">
-        <Marquee pauseOnHover className="[--duration:55s] [--gap:1rem]">
-          {FIRST_ROW.map((review) => (
-            <ReviewCard key={review.username} {...review} />
-          ))}
-        </Marquee>
-        <Marquee reverse pauseOnHover className="[--duration:55s] [--gap:1rem]">
-          {SECOND_ROW.map((review) => (
-            <ReviewCard key={review.username} {...review} />
-          ))}
-        </Marquee>
+  return (
+    <div className="mt-12 w-full max-w-5xl sm:mt-14">
+      <p className="ac-eyebrow mb-4 text-center text-emerald-400/80">
+        Builders shipping with AgentCash
+      </p>
+      <div
+        className="relative w-full overflow-hidden"
+        aria-label="What builders are saying about AgentCash"
+      >
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[18%] bg-gradient-to-r from-[var(--ac-bg)] from-25% via-[var(--ac-bg)]/70 via-55% to-transparent sm:w-1/4"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[18%] bg-gradient-to-l from-[var(--ac-bg)] from-25% via-[var(--ac-bg)]/70 via-55% to-transparent sm:w-1/4"
+          aria-hidden
+        />
+
+        <div className="flex w-full flex-col gap-3 [--gap:1rem] sm:gap-4">
+          <Marquee pauseOnHover repeat={2} className="[--duration:42s] [--gap:1rem]">
+            {FIRST_ROW.map((review) => (
+              <ReviewCard key={review.username} reduceMotion={reduceMotion} {...review} />
+            ))}
+          </Marquee>
+          <Marquee reverse pauseOnHover repeat={2} className="[--duration:48s] [--gap:1rem]">
+            {SECOND_ROW.map((review) => (
+              <ReviewCard key={`${review.username}-row2`} reduceMotion={reduceMotion} {...review} />
+            ))}
+          </Marquee>
+        </div>
       </div>
     </div>
   );

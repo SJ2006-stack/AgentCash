@@ -5,20 +5,21 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { usePrefersReducedMotion } from "@/lib/motion";
 import { Container } from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { label: "Product", href: "#platform" },
   { label: "Docs", href: "https://docs.agentcash.tech", external: true },
-  { label: "Developers", href: "#developers" },
-  { label: "How it works", href: "#how-it-works" },
+  { label: "Status", href: "https://status.agentcash.tech", external: true },
+  { label: "Contact", href: "mailto:hello@agentcash.tech", external: true },
 ] as const;
 
 export function SiteHeader() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduceMotion = usePrefersReducedMotion();
 
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 12);
@@ -58,24 +59,18 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground transition hover:text-foreground"
-            >
-              GitHub
-            </Link>
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
             <Button
               size="sm"
               className="hidden bg-gradient-to-br from-emerald-300 via-emerald-400 to-teal-500 text-emerald-950 shadow-[var(--ac-shadow-glow)] sm:inline-flex"
-              render={<a href="#get-started" />}
+              render={
+                <a href="mailto:hello@agentcash.tech?subject=AgentCash%20early%20access" />
+              }
               nativeButton={false}
             >
-              Get started
+              Join waitlist
             </Button>
 
             <button
@@ -111,7 +106,11 @@ export function SiteHeader() {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 380, damping: 36 }}
+              transition={
+                reduceMotion
+                  ? { duration: 0.2 }
+                  : { type: "spring", stiffness: 380, damping: 36 }
+              }
               aria-label="Mobile"
             >
               <div className="mb-8 flex items-center justify-between">
@@ -127,7 +126,7 @@ export function SiteHeader() {
               </div>
 
               <ul className="flex flex-col gap-1">
-                {[...nav, { label: "GitHub", href: "https://github.com", external: true as const }].map(
+                {nav.map(
                   (item, i) => (
                     <motion.li
                       key={item.label}
@@ -154,10 +153,15 @@ export function SiteHeader() {
                 <Button
                   size="lg"
                   className="w-full bg-gradient-to-br from-emerald-300 via-emerald-400 to-teal-500 text-emerald-950"
-                  render={<a href="#get-started" onClick={() => setMenuOpen(false)} />}
+                  render={
+                    <a
+                      href="mailto:hello@agentcash.tech?subject=AgentCash%20early%20access"
+                      onClick={() => setMenuOpen(false)}
+                    />
+                  }
                   nativeButton={false}
                 >
-                  Get started
+                  Join waitlist
                 </Button>
               </div>
             </motion.nav>

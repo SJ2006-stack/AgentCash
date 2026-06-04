@@ -1,5 +1,8 @@
 export { AgentCashDock } from "./AgentCashDock";
 export { ComingSoon } from "./ComingSoon";
+export { ComingSoonHero } from "./ComingSoonHero";
+export { DockReveal } from "./DockReveal";
+export { MarqueeReveal } from "./MarqueeReveal";
 export { ReviewsMarquee } from "./ReviewsMarquee";
 export { CliDemo } from "./CliDemo";
 export { DeveloperSection } from "./DeveloperSection";

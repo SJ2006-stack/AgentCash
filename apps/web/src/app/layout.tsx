@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "AgentCash — micro-payments for AI agents",
   description:
-    "Give an AI $0.10 and a task. AgentCash is the control plane for x402 USDC spend — budgets, task routing, and human approvals before a cent leaves your wallet.",
+    "Coming soon: micro-payments for AI agents. x402 USDC on Base — budgets, task routing, and approvals before a cent leaves your wallet.",
   openGraph: {
     title: "AgentCash — micro-payments for AI agents",
     description:
