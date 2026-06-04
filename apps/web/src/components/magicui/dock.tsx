@@ -1,6 +1,6 @@
 "use client";
 
-import React, { type PropsWithChildren, useRef } from "react";
+import React, { createContext, type PropsWithChildren, useContext, useRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   motion,
@@ -27,6 +27,8 @@ const DEFAULT_SIZE = 40;
 const DEFAULT_MAGNIFICATION = 60;
 const DEFAULT_DISTANCE = 140;
 const DEFAULT_DISABLEMAGNIFICATION = false;
+
+const DockMouseXContext = createContext<MotionValue<number> | null>(null);
 
 const dockVariants = cva(
   "mx-auto flex h-[58px] w-max items-center justify-center gap-2 rounded-2xl border border-emerald-400/20 bg-[rgba(12,17,24,0.72)] p-2 shadow-[0_0_40px_-8px_rgba(52,211,153,0.2)] backdrop-blur-md supports-backdrop-blur:bg-[rgba(12,17,24,0.55)]",
@@ -65,19 +67,21 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
     };
 
     return (
-      <motion.div
-        ref={ref}
-        onMouseMove={(e) => mouseX.set(e.pageX)}
-        onMouseLeave={() => mouseX.set(Infinity)}
-        {...props}
-        className={cn(dockVariants({ className }), {
-          "items-start": direction === "top",
-          "items-center": direction === "middle",
-          "items-end": direction === "bottom",
-        })}
-      >
-        {renderChildren()}
-      </motion.div>
+      <DockMouseXContext.Provider value={mouseX}>
+        <motion.div
+          ref={ref}
+          onMouseMove={(e) => mouseX.set(e.pageX)}
+          onMouseLeave={() => mouseX.set(Infinity)}
+          {...props}
+          className={cn(dockVariants({ className }), {
+            "items-start": direction === "top",
+            "items-center": direction === "middle",
+            "items-end": direction === "bottom",
+          })}
+        >
+          {renderChildren()}
+        </motion.div>
+      </DockMouseXContext.Provider>
     );
   },
 );
@@ -109,8 +113,10 @@ const DockIcon = ({
   const ref = useRef<HTMLDivElement>(null);
   const padding = Math.max(6, size * 0.2);
   const defaultMouseX = useMotionValue(Infinity);
+  const dockMouseX = useContext(DockMouseXContext);
+  const activeMouseX = mouseX ?? dockMouseX ?? defaultMouseX;
 
-  const distanceCalc = useTransform(mouseX ?? defaultMouseX, (val: number) => {
+  const distanceCalc = useTransform(activeMouseX, (val: number) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - bounds.x - bounds.width / 2;
   });

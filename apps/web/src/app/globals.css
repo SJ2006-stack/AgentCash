@@ -91,13 +91,13 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
 }
 
-html {
-  scroll-behavior: smooth;
+body {
+  min-height: 100%;
 }
 
 body {
@@ -197,19 +197,15 @@ code {
   animation: ac-marquee 40s linear infinite;
 }
 
+/* Scoped overrides only — a global * { animation-duration: 0.01ms } block breaks Magic UI motion. */
 @media (prefers-reduced-motion: reduce) {
-  .ac-marquee-track {
-    animation: none;
+  .ac-marquee-track,
+  .animate-marquee,
+  .animate-marquee-vertical {
+    animation: none !important;
   }
   .ac-scanline::after {
     animation: none;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
   html {
     scroll-behavior: auto;

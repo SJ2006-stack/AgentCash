@@ -73,7 +73,7 @@ CSS variables pair with `src/lib/motion.ts`:
 
 **Principles:**
 - Viewport reveals via `<Reveal>` — once, 14px Y offset
-- Honor `prefers-reduced-motion` everywhere
+- Honor `prefers-reduced-motion` everywhere (target `.animate-marquee` / legacy `.ac-marquee-track` in `globals.css` — avoid global `*` animation overrides, which silently disable Magic UI CSS motion)
 - No parallax, no infinite hero animations (except subtle pulse dots)
 - Hover states: 150ms color/border transitions
 
