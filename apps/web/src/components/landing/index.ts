@@ -1,3 +1,4 @@
+export { ComingSoon } from "./ComingSoon";
 export { CliDemo } from "./CliDemo";
 export { DeveloperSection } from "./DeveloperSection";
 export { FAQ } from "./FAQ";

@@ -1,33 +1,11 @@
-import {
-  DeveloperSection,
-  FAQ,
-  Features,
-  FinalCTA,
-  GetStartedBand,
-  Hero,
-  HowItWorks,
-  LogoStrip,
-  ProblemSolution,
-  Roadmap,
-  SiteFooter,
-  SocialRows,
-} from "@/components/landing";
+import { ComingSoon } from "@/components/landing/ComingSoon";
+import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function Home() {
   return (
     <>
       <main>
-        <Hero />
-        <LogoStrip />
-        <ProblemSolution />
-        <Features />
-        <HowItWorks />
-        <DeveloperSection />
-        <SocialRows />
-        <Roadmap />
-        <GetStartedBand />
-        <FAQ />
-        <FinalCTA />
+        <ComingSoon />
       </main>
       <SiteFooter />
     </>

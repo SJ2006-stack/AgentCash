@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "npm run build:registry && npm run build:task-router && npm run build:cf && npm run build:x402",
-    "build:cf": "npm run build:cf -w web",
+    "build:cf": "node scripts/ensure-linux-native-deps.mjs && node scripts/verify-cf-native-deps.mjs && npm run build:cf -w web",
     "build:registry": "npm run build -w @agentcash/registry",
     "build:task-router": "npm run build -w @agentcash/task-router",
     "build:x402": "npm run build -w @agentcash/x402-client",
@@ -25,6 +25,11 @@
     "day1:pay": "npm run agentcash -w @agentcash/x402-client -- pay",
     "day1:wallet": "npm run agentcash -w @agentcash/x402-client -- wallet info",
     "day1:modes": "npm run agentcash -w @agentcash/x402-client -- wallet modes"
+  },
+  "optionalDependencies": {
+    "@ast-grep/napi-linux-x64-gnu": "0.40.5",
+    "@tailwindcss/oxide-linux-x64-gnu": "4.3.0",
+    "lightningcss-linux-x64-gnu": "1.32.0"
   },
   "devDependencies": {
     "shadcn": "^4.7.0"

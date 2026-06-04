@@ -4,6 +4,7 @@ node_modules/
 .wrangler/
 dist/
 .npm-cache/
+.npm-ci-cache/
 .env
 .env.local
 .DS_Store
